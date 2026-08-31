@@ -70,9 +70,24 @@ export default function MessageBubble({ message }) {
   const isInteractive = message.messageType === 'BUTTONS' || message.messageType === 'LIST'
   const options = message.messageType === 'BUTTONS' ? message.extraPayload?.buttons : message.extraPayload?.items
 
+  // Who actually sent this — "Bot" for flow-engine messages, the agent's
+  // name otherwise, so it's obvious at a glance who answered when more
+  // than one person (or the bot) has touched a conversation. Falls back
+  // to the role if name is somehow missing, so something always shows
+  // instead of silently rendering nothing.
+  const authorLabel = isOutbound
+    ? message.author?.role === 'bot'
+      ? 'Bot'
+      : message.author?.name || message.author?.role || null
+    : null
+
   return (
     <div className={`flex ${isOutbound ? 'justify-end' : 'justify-start'}`}>
       <div className={`flex max-w-[78%] flex-col gap-1 sm:max-w-[65%] ${isOutbound ? 'items-end' : 'items-start'}`}>
+        {authorLabel && (
+          <span className="px-1 text-[11px] font-medium text-ink-400 dark:text-navy-500">{authorLabel}</span>
+        )}
+
         {message.attachments?.map((att, idx) => (
           <div
             key={idx}

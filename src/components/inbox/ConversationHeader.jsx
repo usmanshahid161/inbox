@@ -370,17 +370,22 @@ export default function ConversationHeader({
       {/* Info */}
       <ConversationInfoPopover interaction={interaction} />
 
-      <TransferShareControl interaction={interaction} />
+      {
+        isCurrentUserParticipant &&
+        <TransferShareControl interaction={interaction} />
+      }
 
       {/* ================= WORK CODES ================= */}
 
-      <div
-        ref={dropdownRef}
+      {
+        isCurrentUserParticipant &&
+        <div
+        ref={ dropdownRef }
         className="relative hidden sm:block"
       >
         <button
           type="button"
-          onClick={() => {
+          onClick={ () => {
             setWorkCodeOpen(
               (prev) => !prev
             )
@@ -388,34 +393,36 @@ export default function ConversationHeader({
             if (workCodeOpen) {
               setSearch('')
             }
-          }}
-          className={`flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-medium transition-colors ${
+          } }
+          className={ `flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-medium transition-colors ${
             workCodeOpen
               ? 'border-brand-300 bg-brand-50 text-brand-700 dark:border-brand-700 dark:bg-brand-950/30 dark:text-brand-300'
               : 'border-ink-200 bg-white text-ink-600 hover:bg-ink-50 dark:border-navy-700 dark:bg-navy-900 dark:text-navy-200 dark:hover:bg-navy-800'
-          }`}
+          }` }
         >
           <span>Tags</span>
 
-          {workCodes.length > 0 && (
-            <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-brand-500 px-1 text-[9px] font-semibold text-white">
-              {workCodes.length}
+          { workCodes.length > 0 && (
+            <span
+              className="flex h-4 min-w-4 items-center justify-center rounded-full bg-brand-500 px-1 text-[9px] font-semibold text-white">
+              { workCodes.length }
             </span>
-          )}
+          ) }
 
           <ChevronDown
-            className={`h-3.5 w-3.5 transition-transform ${
+            className={ `h-3.5 w-3.5 transition-transform ${
               workCodeOpen
                 ? 'rotate-180'
                 : ''
-            }`}
+            }` }
           />
         </button>
 
-        {workCodeOpen && (
-          <div className="absolute right-0 top-full z-50 mt-2 w-80 overflow-hidden rounded-xl border border-ink-200 bg-white shadow-xl dark:border-navy-700 dark:bg-navy-900">
+        { workCodeOpen && (
+          <div
+            className="absolute right-0 top-full z-50 mt-2 w-80 overflow-hidden rounded-xl border border-ink-200 bg-white shadow-xl dark:border-navy-700 dark:bg-navy-900">
 
-            {/* Header */}
+            {/* Header */ }
             <div className="border-b border-ink-100 p-3 dark:border-navy-800">
               <p className="text-xs font-semibold text-ink-800 dark:text-white">
                 Tags
@@ -425,19 +432,20 @@ export default function ConversationHeader({
                 Select multiple Tags
               </p>
 
-              {/* Search */}
+              {/* Search */ }
               <div className="relative mt-2.5">
-                <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-ink-400 dark:text-navy-500" />
+                <Search
+                  className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-ink-400 dark:text-navy-500"/>
 
                 <input
-                  ref={searchRef}
-                  value={search}
-                  onChange={(e) =>
+                  ref={ searchRef }
+                  value={ search }
+                  onChange={ (e) =>
                     setSearch(
                       e.target.value
                     )
                   }
-                  onClick={(e) =>
+                  onClick={ (e) =>
                     e.stopPropagation()
                   }
                   placeholder="Search tags..."
@@ -446,58 +454,58 @@ export default function ConversationHeader({
               </div>
             </div>
 
-            {/* Selected codes */}
-            {workCodes.length > 0 && (
+            {/* Selected codes */ }
+            { workCodes.length > 0 && (
               <div className="border-b border-ink-100 px-3 py-2.5 dark:border-navy-800">
                 <p className="mb-1.5 text-[10px] font-medium uppercase tracking-wide text-ink-400 dark:text-navy-500">
                   Selected
                 </p>
 
                 <div className="flex flex-wrap gap-1.5">
-                  {workCodes.map(
+                  { workCodes.map(
                     (workCode) => (
                       <span
-                        key={String(
+                        key={ String(
                           workCode.id
-                        )}
+                        ) }
                         className="inline-flex max-w-full items-center gap-1 rounded-md bg-brand-50 px-2 py-1 text-[10px] font-medium text-brand-700 dark:bg-brand-950/30 dark:text-brand-300"
                       >
                         <span className="max-w-[150px] truncate">
-                          {workCode.text}
+                          { workCode.text }
                         </span>
 
                         <button
                           type="button"
-                          onClick={() =>
+                          onClick={ () =>
                             handleWorkCodeToggle(
                               workCode
                             )
                           }
                           className="shrink-0 rounded hover:bg-brand-100 dark:hover:bg-brand-900/50"
                         >
-                          <X className="h-3 w-3" />
+                          <X className="h-3 w-3"/>
                         </button>
                       </span>
                     )
-                  )}
+                  ) }
                 </div>
               </div>
-            )}
+            ) }
 
-            {/* Available */}
+            {/* Available */ }
             <div className="max-h-64 overflow-y-auto p-1.5">
-              {filteredWorkCodes.length ===
+              { filteredWorkCodes.length ===
               0 ? (
                 <div className="px-3 py-6 text-center">
                   <p className="text-xs text-ink-400 dark:text-navy-500">
-                    {availableWorkCodes.length === 0 ? 'No tags created yet' : 'No tags found'}
+                    { availableWorkCodes.length === 0 ? 'No tags created yet' : 'No tags found' }
                   </p>
 
-                  {search && availableWorkCodes.length > 0 && (
+                  { search && availableWorkCodes.length > 0 && (
                     <p className="mt-1 text-[10px] text-ink-300 dark:text-navy-600">
                       Try another search
                     </p>
-                  )}
+                  ) }
                 </div>
               ) : (
                 filteredWorkCodes.map(
@@ -509,55 +517,57 @@ export default function ConversationHeader({
 
                     return (
                       <button
-                        key={String(
+                        key={ String(
                           workCode.id
-                        )}
+                        ) }
                         type="button"
-                        onClick={() =>
+                        onClick={ () =>
                           handleWorkCodeToggle(
                             workCode
                           )
                         }
-                        className={`flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left transition-colors ${
+                        className={ `flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left transition-colors ${
                           selected
                             ? 'bg-brand-50 dark:bg-brand-950/30'
                             : 'hover:bg-ink-50 dark:hover:bg-navy-800'
-                        }`}
+                        }` }
                       >
-                        {/* Checkbox */}
+                        {/* Checkbox */ }
                         <span
-                          className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${
+                          className={ `flex h-4 w-4 shrink-0 items-center justify-center rounded border ${
                             selected
                               ? 'border-brand-500 bg-brand-500 text-white'
                               : 'border-ink-300 dark:border-navy-600'
-                          }`}
+                          }` }
                         >
-                          {selected && (
-                            <Check className="h-3 w-3" />
-                          )}
+                          { selected && (
+                            <Check className="h-3 w-3"/>
+                          ) }
                         </span>
 
-                        {/* Color dot */}
-                        {workCode.color && (
+                        {/* Color dot */ }
+                        { workCode.color && (
                           <span
                             className="h-2 w-2 shrink-0 rounded-full"
-                            style={{ backgroundColor: workCode.color }}
+                            style={ { backgroundColor: workCode.color } }
                           />
-                        )}
+                        ) }
 
-                        {/* Text */}
+                        {/* Text */ }
                         <span className="min-w-0 flex-1 truncate text-xs font-medium text-ink-800 dark:text-navy-100">
-                          {workCode.text}
+                          { workCode.text }
                         </span>
                       </button>
                     )
                   }
                 )
-              )}
+              ) }
             </div>
           </div>
-        )}
+        ) }
       </div>
+
+      }
 
       {/* Conversation action */}
       <button

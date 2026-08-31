@@ -5,6 +5,7 @@ import InfiniteScrollList from '../common/InfiniteScrollList'
 import MessageBubble from './MessageBubble'
 import EmptyState from '../common/EmptyState'
 import Loader, { Skeleton } from '../common/Loader'
+import { formatClockTime } from '../../utils/formatters'
 import {
   fetchMessages,
   selectMessagesForInteraction,
@@ -134,7 +135,18 @@ export default function MessageList({ interactionId }) {
                 </span>
               </div>
             )}
-            <MessageBubble message={message} />
+            {message.messageType === 'notification' ? (
+              <div className="my-2 flex items-center justify-center">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-ink-100 px-3 py-1 text-center text-[11px] text-ink-500 dark:bg-navy-800/70 dark:text-navy-400">
+                  <span className="text-ink-400 dark:text-navy-500">·</span>
+                  <span>{message.message}</span>
+                  <span className="text-ink-400 dark:text-navy-500">·</span>
+                  <span>{formatClockTime(message.createdAt)}</span>
+                </span>
+              </div>
+            ) : (
+              <MessageBubble message={message} />
+            )}
           </>
         )
       }}

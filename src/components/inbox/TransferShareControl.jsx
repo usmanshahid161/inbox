@@ -16,13 +16,24 @@ export default function TransferShareControl({ interaction }) {
 
   // Only agents assigned to this conversation's queue are relevant —
   // handing off to someone outside the queue wouldn't make sense (they
-  // wouldn't otherwise see this conversation at all).
+  // wouldn't otherwise see this conversation at all). Also excludes
+  // anyone who's already an active participant (status: true) — no point
+  // offering to transfer/share with someone already on the conversation.
+  const activeParticipantIds = useMemo(
+    () => new Set((interaction?.participants || []).filter((p) => p.status).map((p) => String(p.id))),
+    [interaction?.participants]
+  )
+
   const queueAgents = useMemo(
     () =>
       allAgents.filter(
-        (a) => a._id !== currentUser?._id && a.role === 'AGENT' && a.queues?.includes(interaction?.queue)
+        (a) =>
+          a._id !== currentUser?._id &&
+          a.role === 'AGENT' &&
+          a.queues?.includes(interaction?.queue) &&
+          !activeParticipantIds.has(String(a._id))
       ),
-    [allAgents, currentUser?._id, interaction?.queue]
+    [allAgents, currentUser?._id, interaction?.queue, activeParticipantIds]
   )
 
   useEffect(() => {

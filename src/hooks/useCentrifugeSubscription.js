@@ -55,6 +55,7 @@ export function useCentrifugeSubscription() {
     centrifugeService.connect({ token, tenantId: tenant.id })
 
     const handleMessagesEvent = (data) => {
+      console.log("Event: ", data?.event, "Queue: ", data?.message?.queue, "Message: ", data?.message )
       switch (data.event) {
         case 'message.created':
           safeDispatch(messageReceived(data.message))
@@ -103,6 +104,7 @@ export function useCentrifugeSubscription() {
     }
 
     const handleInteractionsEvent = (data) => {
+      console.log("Event: ", data?.event, "Queue: ", data?.interaction?.queue, "Interaction: ", data?.interaction )
       switch (data.event) {
         case 'interaction.created': {
           safeDispatch(interactionUpserted(data.interaction))

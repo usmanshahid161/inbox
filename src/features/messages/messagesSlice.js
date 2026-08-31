@@ -75,6 +75,23 @@ const messagesSlice = createSlice({
     messageReceived(state, action) {
       const msg = action.payload
       const thread = ensureThread(state, msg.interactionId)
+
+      // Replace the matching optimistic placeholder (same author + text,
+      // still marked SENDING) instead of appending — otherwise the
+      // confirmed message from the server shows up as a second, duplicate
+      // bubble alongside the one added instantly when the agent hit send.
+      const optimisticIndex = thread.items.findIndex(
+        (m) =>
+          m?.optimistic &&
+          String(m.author?.id) === String(msg.author?.id) &&
+          m.message === msg.message
+      )
+
+      if (optimisticIndex !== -1) {
+        thread.items[optimisticIndex] = msg
+        return
+      }
+
       if (!thread.items.some((m) => m?._id === msg?._id)) {
         thread.items.push(msg)
       }

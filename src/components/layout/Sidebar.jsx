@@ -6,13 +6,15 @@ import { selectTotalUnreadCount } from '../../features/interactions/interactions
 import Avatar from '../common/Avatar'
 
 const NAV_ITEMS = [
-  { to: '/app/inbox', label: 'Inbox', icon: Inbox, showUnread: true },
+  // Agent-only — admins don't work conversations, so Inbox is hidden from
+  // them entirely (matches the route guard on /app/inbox — see RoleRoute).
+  { to: '/app/inbox', label: 'Inbox', icon: Inbox, showUnread: true, agentOnly: true },
   { to: '/app/contacts', label: 'Contacts', icon: Users },
   { to: '/app/channels', label: 'Channels', icon: Radio, adminOnly: true },
   { to: '/app/agents', label: 'Agents', icon: Headphones, adminOnly: true },
-  { to: '/app/analytics', label: 'Analytics', icon: BarChart3 },
-  { to: '/app/templates', label: 'Templates', icon: LayoutTemplate },
-  { to: '/app/flows', label: 'Flow Builder', icon: Workflow },
+  { to: '/app/analytics', label: 'Analytics', icon: BarChart3, adminOnly: true },
+  { to: '/app/templates', label: 'Templates', icon: LayoutTemplate, adminOnly: true },
+  { to: '/app/flows', label: 'Flow Builder', icon: Workflow, adminOnly: true },
   { to: '/app/admin/tags', label: 'Tags', icon: TagIcon, adminOnly: true },
   { to: '/app/admin/queues', label: 'Queues', icon: ListOrdered, adminOnly: true },
   { to: '/app/admin/groups', label: 'Groups', icon: UsersRound, adminOnly: true },
@@ -26,7 +28,11 @@ const NAV_ITEMS = [
 export default function Sidebar() {
   const { user, tenant, isAdmin, logout } = useAuth()
   const unreadCount = useSelector(selectTotalUnreadCount)
-  const items = NAV_ITEMS.filter((item) => !item.adminOnly || isAdmin)
+  const items = NAV_ITEMS.filter((item) => {
+    if (item.adminOnly && !isAdmin) return false
+    if (item.agentOnly && isAdmin) return false
+    return true
+  })
 
   return (
     <aside className="hidden w-60 shrink-0 flex-col bg-navy-950 lg:flex">
