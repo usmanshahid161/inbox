@@ -1,0 +1,8 @@
+{
+  "client": {
+    "insecure": true,
+    "allowed_origins": [
+      "http://localhost:5173"
+    ]
+  }
+}
