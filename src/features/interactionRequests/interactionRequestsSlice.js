@@ -12,9 +12,9 @@ const initialState = {
 
 export const transferInteraction = createAsyncThunk(
   'interactionRequests/transfer',
-  async ({ interactionId, toAgentId, fromAgentName }, { rejectWithValue }) => {
+  async ({ interactionId, toAgentId, fromAgentName, toAgentName }, { rejectWithValue }) => {
     try {
-      return await interactionRequestApi.transfer(interactionId, { toAgentId, fromAgentName })
+      return await interactionRequestApi.transfer(interactionId, { toAgentId, fromAgentName, toAgentName })
     } catch (err) {
       return rejectWithValue(err?.response?.data?.message || 'Could not transfer this conversation.')
     }
@@ -23,9 +23,9 @@ export const transferInteraction = createAsyncThunk(
 
 export const shareInteraction = createAsyncThunk(
   'interactionRequests/share',
-  async ({ interactionId, toAgentId, fromAgentName }, { rejectWithValue }) => {
+  async ({ interactionId, toAgentId, fromAgentName, toAgentName }, { rejectWithValue }) => {
     try {
-      return await interactionRequestApi.share(interactionId, { toAgentId, fromAgentName })
+      return await interactionRequestApi.share(interactionId, { toAgentId, fromAgentName, toAgentName })
     } catch (err) {
       return rejectWithValue(err?.response?.data?.message || 'Could not share this conversation.')
     }

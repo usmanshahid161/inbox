@@ -28,6 +28,8 @@ import QuickReplies from './pages/QuickReplies.jsx';
 import QuickReplyForm from './pages/QuickReplyForm.jsx';
 import BreakTypes from './pages/BreakTypes.jsx';
 import BreakTypeForm from './pages/BreakTypeForm.jsx';
+import ContactForm from './pages/ContactForm.jsx';
+import ContactDetail from './pages/ContactDetail.jsx';
 
 export default function App() {
   return (
@@ -52,6 +54,9 @@ export default function App() {
           }
         />
         <Route path="contacts" element={<Contacts />} />
+        <Route path="contacts/new" element={<ContactForm />} />
+        <Route path="contacts/:id" element={<ContactDetail />} />
+        <Route path="contacts/:id/edit" element={<ContactForm />} />
         <Route
           path="channels"
           element={

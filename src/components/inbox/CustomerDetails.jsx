@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { X, Phone, Mail, Hash, Tag, Plus } from 'lucide-react'
+import { X, Phone, Mail, Hash, Tag, Plus, User2, History } from 'lucide-react'
 import Avatar from '../common/Avatar'
 import { channelLabel } from '../common/ChannelIcon'
 import Badge from '../common/Badge'
@@ -8,6 +8,45 @@ import { closeCustomerDetailsDrawer, selectIsCustomerDetailsDrawerOpen } from '.
 import { formatRelativeTime } from '../../utils/formatters'
 import { INTERACTION_STATUS } from '../../utils/constants'
 import { addNotes, updateNote, deleteNote } from '../../features/interactions/interactionsSlice.js'
+import ContactsTab from './ContactsTab'
+import InteractionHistoryTab from './InteractionHistoryTab'
+
+const PANEL_TABS = [
+  { id: 'details', label: 'Details', icon: Hash },
+  { id: 'contacts', label: 'Contacts', icon: User2 },
+  { id: 'history', label: 'History', icon: History }
+]
+
+function PanelContent({ interaction }) {
+  const [activeTab, setActiveTab] = useState('details')
+
+  return (
+    <div className="flex h-full flex-col">
+      <div className="flex shrink-0 border-b border-ink-100 dark:border-navy-800">
+        {PANEL_TABS.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`flex flex-1 items-center justify-center gap-1.5 px-2 py-2.5 text-xs font-medium transition-colors ${
+              activeTab === tab.id
+                ? 'border-b-2 border-brand-500 text-brand-600 dark:text-brand-400'
+                : 'border-b-2 border-transparent text-ink-400 hover:text-ink-600 dark:text-navy-500 dark:hover:text-navy-300'
+            }`}
+          >
+            <tab.icon className="h-3.5 w-3.5" />
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="min-h-0 flex-1">
+        {activeTab === 'details' && <DetailsTab interaction={interaction} />}
+        {activeTab === 'contacts' && <ContactsTab interaction={interaction} />}
+        {activeTab === 'history' && <InteractionHistoryTab interaction={interaction} />}
+      </div>
+    </div>
+  )
+}
 
 function DetailRow({ icon: Icon, label, value }) {
   if (!value) return null
@@ -35,7 +74,7 @@ function SectionLabel({ children }) {
   return <p className="text-[10px] font-semibold uppercase tracking-wide text-ink-400 dark:text-navy-500">{children}</p>
 }
 
-function PanelContent({ interaction }) {
+function DetailsTab({ interaction }) {
   const [note, setNote] = useState('')
   const [editingNoteId, setEditingNoteId] = useState(null)
   const [editingText, setEditingText] = useState('')

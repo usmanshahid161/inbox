@@ -60,7 +60,7 @@ export default function TransferShareControl({ interaction }) {
   const handlePick = (type, agent) => {
     const action = type === 'TRANSFER' ? transferInteraction : shareInteraction
     dispatch(
-      action({ interactionId: interaction._id, toAgentId: agent._id, fromAgentName: currentUser?.name })
+      action({ interactionId: interaction._id, toAgentId: agent._id, toAgentName:agent?.name,  fromAgentName: currentUser?.name })
     ).then((res) => {
       if (!res.error) {
         dispatch(showToast({ message: `${type === 'TRANSFER' ? 'Transfer' : 'Share'} request sent to ${agent.name}`, tone: 'default' }))

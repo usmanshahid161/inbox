@@ -49,7 +49,7 @@ export const store = configureStore({
     quickReplies: quickRepliesReducer,
     breakTypes: breakTypesReducer,
     presence: presenceReducer,
-    interactionRequests: interactionRequestsReducer
+    interactionRequests: interactionRequestsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(logger),
