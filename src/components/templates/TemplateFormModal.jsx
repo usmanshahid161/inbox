@@ -14,6 +14,7 @@ import {
   CATEGORIES,
   LANGUAGES,
   HEADER_TYPES,
+  OTP_TYPES,
   LIMITS,
   sanitizeTemplateName,
   extractVariables,
@@ -31,6 +32,8 @@ const emptyTemplate = {
     body: { text: '', examples: [] },
     footer: { text: '' },
     buttons: [],
+    // AUTHENTICATION only — ignored/unused for other categories.
+    authentication: { addSecurityRecommendation: false, codeExpirationMinutes: null },
   },
 }
 
@@ -95,13 +98,40 @@ export default function TemplateFormModal() {
     if (editingTemplate) {
       dispatch(updateTemplate({ id: editingTemplate._id, payload }))
     } else {
-
-      console.log(payload, "payloaddddddddddddd")
       dispatch(createTemplate(payload))
     }
   }
 
   const headerType = form.components.header.type
+  const isAuthentication = form.category === 'AUTHENTICATION'
+  const otpButton = form.components.buttons?.[0] || { type: 'OTP', text: 'Copy Code', otpType: 'COPY_CODE' }
+
+  const handleCategoryChange = (category) => {
+    setForm((prev) => {
+      const next = structuredClone(prev)
+      next.category = category
+      // Switching to/from AUTHENTICATION changes what's even valid to send —
+      // reset the shape-specific fields so stale data from the other mode
+      // can't slip through (e.g. a header left over from MARKETING).
+      if (category === 'AUTHENTICATION') {
+        next.components.header = { type: 'NONE', text: '', example: '', exampleUrl: '' }
+        next.components.body = { text: '', examples: [] }
+        next.components.footer = { text: '' }
+        next.components.buttons = [{ type: 'OTP', text: 'Copy Code', otpType: 'COPY_CODE' }]
+      } else if (prev.category === 'AUTHENTICATION') {
+        next.components.buttons = []
+      }
+      return next
+    })
+  }
+
+  const updateOtpButton = (patch) => {
+    setForm((prev) => {
+      const next = structuredClone(prev)
+      next.components.buttons = [{ ...otpButton, ...patch }]
+      return next
+    })
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
@@ -149,7 +179,7 @@ export default function TemplateFormModal() {
                 <label className="mb-1 block text-sm font-medium text-ink-700 dark:text-ink-200">Category</label>
                 <select
                   value={form.category}
-                  onChange={(e) => updateField('category', e.target.value)}
+                  onChange={(e) => handleCategoryChange(e.target.value)}
                   className="w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-navy-700 dark:bg-navy-900 dark:text-ink-100"
                 >
                   {CATEGORIES.map((c) => (
@@ -177,118 +207,206 @@ export default function TemplateFormModal() {
             </div>
 
             {/* Header */}
-            <div>
-              <label className="mb-1 block text-sm font-medium text-ink-700 dark:text-ink-200">Header (optional)</label>
-              <select
-                value={headerType}
-                onChange={(e) => updateField('components.header', { type: e.target.value, text: '', example: '', exampleUrl: '' })}
-                className="w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-navy-700 dark:bg-navy-900 dark:text-ink-100"
-              >
-                {HEADER_TYPES.map((h) => (
-                  <option key={h} value={h}>
-                    {h === 'NONE' ? 'No header' : h.charAt(0) + h.slice(1).toLowerCase()}
-                  </option>
-                ))}
-              </select>
+            {!isAuthentication && (
+              <div>
+                <label className="mb-1 block text-sm font-medium text-ink-700 dark:text-ink-200">Header (optional)</label>
+                <select
+                  value={headerType}
+                  onChange={(e) => updateField('components.header', { type: e.target.value, text: '', example: '', exampleUrl: '' })}
+                  className="w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-navy-700 dark:bg-navy-900 dark:text-ink-100"
+                >
+                  {HEADER_TYPES.map((h) => (
+                    <option key={h} value={h}>
+                      {h === 'NONE' ? 'No header' : h.charAt(0) + h.slice(1).toLowerCase()}
+                    </option>
+                  ))}
+                </select>
 
-              {headerType === 'TEXT' && (
-                <div className="mt-2 space-y-2">
-                  <input
-                    type="text"
-                    value={form.components.header.text}
-                    onChange={(e) => updateField('components.header.text', e.target.value)}
-                    placeholder="Your order {{1}} has shipped"
-                    maxLength={LIMITS.HEADER_TEXT_MAX}
-                    className="w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-navy-700 dark:bg-navy-900 dark:text-ink-100"
-                  />
-                  {extractVariables(form.components.header.text).length > 0 && (
+                {headerType === 'TEXT' && (
+                  <div className="mt-2 space-y-2">
                     <input
                       type="text"
-                      value={form.components.header.example}
-                      onChange={(e) => updateField('components.header.example', e.target.value)}
-                      placeholder="Example value for {{1}}, e.g. #48291"
+                      value={form.components.header.text}
+                      onChange={(e) => updateField('components.header.text', e.target.value)}
+                      placeholder="Your order {{1}} has shipped"
+                      maxLength={LIMITS.HEADER_TEXT_MAX}
                       className="w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-navy-700 dark:bg-navy-900 dark:text-ink-100"
                     />
-                  )}
-                </div>
-              )}
+                    {extractVariables(form.components.header.text).length > 0 && (
+                      <input
+                        type="text"
+                        value={form.components.header.example}
+                        onChange={(e) => updateField('components.header.example', e.target.value)}
+                        placeholder="Example value for {{1}}, e.g. #48291"
+                        className="w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-navy-700 dark:bg-navy-900 dark:text-ink-100"
+                      />
+                    )}
+                  </div>
+                )}
 
-              {['IMAGE', 'VIDEO', 'DOCUMENT'].includes(headerType) && (
-                <input
-                  type="text"
-                  value={form.components.header.exampleUrl}
-                  onChange={(e) => updateField('components.header.exampleUrl', e.target.value)}
-                  placeholder="Sample media URL for review (required)"
-                  className="mt-2 w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-navy-700 dark:bg-navy-900 dark:text-ink-100"
-                />
-              )}
-              {touched && errors.header && <p className="mt-1 text-xs text-rose-500">{errors.header}</p>}
-              {touched && errors.headerMedia && <p className="mt-1 text-xs text-rose-500">{errors.headerMedia}</p>}
-            </div>
+                {['IMAGE', 'VIDEO', 'DOCUMENT'].includes(headerType) && (
+                  <input
+                    type="text"
+                    value={form.components.header.exampleUrl}
+                    onChange={(e) => updateField('components.header.exampleUrl', e.target.value)}
+                    placeholder="Publicly accessible sample media URL (required)"
+                    className="mt-2 w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-navy-700 dark:bg-navy-900 dark:text-ink-100"
+                  />
+                )}
+                {touched && errors.header && <p className="mt-1 text-xs text-rose-500">{errors.header}</p>}
+                {touched && errors.headerMedia && <p className="mt-1 text-xs text-rose-500">{errors.headerMedia}</p>}
+              </div>
+            )}
 
             {/* Body */}
-            <div>
-              <div className="mb-1 flex items-center justify-between">
-                <label className="block text-sm font-medium text-ink-700 dark:text-ink-200">Body</label>
-                <span className="text-xs text-ink-400">{form.components.body.text.length}/{LIMITS.BODY_TEXT_MAX}</span>
-              </div>
-              <textarea
-                value={form.components.body.text}
-                onChange={(e) => updateField('components.body.text', e.target.value)}
-                placeholder={'Hi {{1}}, your order #{{2}} has been confirmed!'}
-                maxLength={LIMITS.BODY_TEXT_MAX}
-                rows={4}
-                className="w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-navy-700 dark:bg-navy-900 dark:text-ink-100"
-              />
-              <p className="mt-1 text-xs text-ink-400">Use {'{{1}}'}, {'{{2}}'} for variables, numbered in order.</p>
-              {touched && errors.body && <p className="mt-1 text-xs text-rose-500">{errors.body}</p>}
-              {touched && errors.bodyWarning && (
-                <p className="mt-1 flex items-center gap-1 text-xs text-amber-600">
-                  <AlertTriangle className="h-3.5 w-3.5" /> {errors.bodyWarning}
-                </p>
-              )}
-
-              {bodyVariables.length > 0 && (
-                <div className="mt-2 space-y-2 rounded-lg bg-ink-50 p-3 dark:bg-navy-900">
-                  <p className="text-xs font-medium text-ink-500 dark:text-ink-400">Example values (needed for review)</p>
-                  {bodyVariables.map((v, i) => (
-                    <input
-                      key={v}
-                      type="text"
-                      value={form.components.body.examples?.[i] || ''}
-                      onChange={(e) => handleBodyExampleChange(i, e.target.value)}
-                      placeholder={`Example for {{${v}}}`}
-                      className="w-full rounded-md border border-ink-200 bg-white px-2.5 py-1.5 text-sm dark:border-navy-700 dark:bg-navy-950 dark:text-ink-100"
-                    />
-                  ))}
-                  {touched && errors.bodyExamples && <p className="text-xs text-rose-500">{errors.bodyExamples}</p>}
+            {!isAuthentication && (
+              <div>
+                <div className="mb-1 flex items-center justify-between">
+                  <label className="block text-sm font-medium text-ink-700 dark:text-ink-200">Body</label>
+                  <span className="text-xs text-ink-400">{form.components.body.text.length}/{LIMITS.BODY_TEXT_MAX}</span>
                 </div>
-              )}
-            </div>
+                <textarea
+                  value={form.components.body.text}
+                  onChange={(e) => updateField('components.body.text', e.target.value)}
+                  placeholder={'Hi {{1}}, your order #{{2}} has been confirmed!'}
+                  maxLength={LIMITS.BODY_TEXT_MAX}
+                  rows={4}
+                  className="w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-navy-700 dark:bg-navy-900 dark:text-ink-100"
+                />
+                <p className="mt-1 text-xs text-ink-400">Use {'{{1}}'}, {'{{2}}'} for variables, numbered in order.</p>
+                {touched && errors.body && <p className="mt-1 text-xs text-rose-500">{errors.body}</p>}
+                {touched && errors.bodyWarning && (
+                  <p className="mt-1 flex items-center gap-1 text-xs text-amber-600">
+                    <AlertTriangle className="h-3.5 w-3.5" /> {errors.bodyWarning}
+                  </p>
+                )}
+
+                {bodyVariables.length > 0 && (
+                  <div className="mt-2 space-y-2 rounded-lg bg-ink-50 p-3 dark:bg-navy-900">
+                    <p className="text-xs font-medium text-ink-500 dark:text-ink-400">Example values (needed for review)</p>
+                    {bodyVariables.map((v, i) => (
+                      <input
+                        key={v}
+                        type="text"
+                        value={form.components.body.examples?.[i] || ''}
+                        onChange={(e) => handleBodyExampleChange(i, e.target.value)}
+                        placeholder={`Example for {{${v}}}`}
+                        className="w-full rounded-md border border-ink-200 bg-white px-2.5 py-1.5 text-sm dark:border-navy-700 dark:bg-navy-950 dark:text-ink-100"
+                      />
+                    ))}
+                    {touched && errors.bodyExamples && <p className="text-xs text-rose-500">{errors.bodyExamples}</p>}
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Footer */}
-            <div>
-              <label className="mb-1 block text-sm font-medium text-ink-700 dark:text-ink-200">Footer (optional)</label>
-              <input
-                type="text"
-                value={form.components.footer.text}
-                onChange={(e) => updateField('components.footer.text', e.target.value)}
-                placeholder="Reply STOP to unsubscribe"
-                maxLength={LIMITS.FOOTER_TEXT_MAX}
-                className="w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-navy-700 dark:bg-navy-900 dark:text-ink-100"
-              />
-              {touched && errors.footer && <p className="mt-1 text-xs text-rose-500">{errors.footer}</p>}
-            </div>
+            {!isAuthentication && (
+              <div>
+                <label className="mb-1 block text-sm font-medium text-ink-700 dark:text-ink-200">Footer (optional)</label>
+                <input
+                  type="text"
+                  value={form.components.footer.text}
+                  onChange={(e) => updateField('components.footer.text', e.target.value)}
+                  placeholder="Reply STOP to unsubscribe"
+                  maxLength={LIMITS.FOOTER_TEXT_MAX}
+                  className="w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-navy-700 dark:bg-navy-900 dark:text-ink-100"
+                />
+                {touched && errors.footer && <p className="mt-1 text-xs text-rose-500">{errors.footer}</p>}
+              </div>
+            )}
 
             {/* Buttons */}
-            <div>
-              <label className="mb-1 block text-sm font-medium text-ink-700 dark:text-ink-200">Buttons (optional)</label>
-              <ButtonsEditor
-                buttons={form.components.buttons}
-                onChange={(buttons) => updateField('components.buttons', buttons)}
-              />
-              {touched && errors.buttons && <p className="mt-1 text-xs text-rose-500">{errors.buttons}</p>}
-            </div>
+            {!isAuthentication && (
+              <div>
+                <label className="mb-1 block text-sm font-medium text-ink-700 dark:text-ink-200">Buttons (optional)</label>
+                <ButtonsEditor
+                  buttons={form.components.buttons}
+                  onChange={(buttons) => updateField('components.buttons', buttons)}
+                />
+                {touched && errors.buttons && <p className="mt-1 text-xs text-rose-500">{errors.buttons}</p>}
+              </div>
+            )}
+
+            {/* Authentication — Meta generates the actual message text;
+             this only configures the pieces it fills in. No header, no
+             custom body/footer text, no regular buttons for this
+             category — see waConstants.js validateAuthenticationTemplate. */}
+            {isAuthentication && (
+              <div className="space-y-4 rounded-lg border border-ink-100 bg-ink-50/60 p-3 dark:border-navy-800 dark:bg-navy-900/40">
+                <p className="text-xs text-ink-500 dark:text-ink-400">
+                  Authentication templates use WhatsApp's fixed verification-code format — there's no header, and body/footer
+                  text is generated by Meta, so only the options below apply.
+                </p>
+
+                <label className="flex items-center gap-2 text-sm text-ink-700 dark:text-ink-200">
+                  <input
+                    type="checkbox"
+                    checked={form.components.authentication?.addSecurityRecommendation || false}
+                    onChange={(e) => updateField('components.authentication.addSecurityRecommendation', e.target.checked)}
+                    className="h-4 w-4 rounded border-ink-300"
+                  />
+                  Add security recommendation ("For your security, do not share this code")
+                </label>
+
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-ink-700 dark:text-ink-200">
+                    Code expiration (minutes, optional)
+                  </label>
+                  <input
+                    type="number"
+                    min={1}
+                    max={90}
+                    value={form.components.authentication?.codeExpirationMinutes || ''}
+                    onChange={(e) =>
+                      updateField(
+                        'components.authentication.codeExpirationMinutes',
+                        e.target.value ? Number(e.target.value) : null
+                      )
+                    }
+                    placeholder="e.g. 5"
+                    className="w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-navy-700 dark:bg-navy-900 dark:text-ink-100"
+                  />
+                  <p className="mt-1 text-xs text-ink-400">Adds "This code expires in N minutes" to the footer.</p>
+                  {touched && errors.authExpiration && <p className="mt-1 text-xs text-rose-500">{errors.authExpiration}</p>}
+                </div>
+
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-ink-700 dark:text-ink-200">OTP delivery method</label>
+                  <select
+                    value={otpButton.otpType}
+                    onChange={(e) => updateOtpButton({ otpType: e.target.value })}
+                    className="w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-navy-700 dark:bg-navy-900 dark:text-ink-100"
+                  >
+                    {OTP_TYPES.map((o) => (
+                      <option key={o.value} value={o.value}>
+                        {o.label}
+                      </option>
+                    ))}
+                  </select>
+
+                  {['ONE_TAP', 'ZERO_TAP'].includes(otpButton.otpType) && (
+                    <div className="mt-2 space-y-2">
+                      <input
+                        type="text"
+                        value={otpButton.packageName || ''}
+                        onChange={(e) => updateOtpButton({ packageName: e.target.value })}
+                        placeholder="Android package name (e.g. com.yourapp)"
+                        className="w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-navy-700 dark:bg-navy-900 dark:text-ink-100"
+                      />
+                      <input
+                        type="text"
+                        value={otpButton.signatureHash || ''}
+                        onChange={(e) => updateOtpButton({ signatureHash: e.target.value })}
+                        placeholder="App signing signature hash"
+                        className="w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-navy-700 dark:bg-navy-900 dark:text-ink-100"
+                      />
+                    </div>
+                  )}
+                  {touched && errors.authOtp && <p className="mt-1 text-xs text-rose-500">{errors.authOtp}</p>}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Footer actions */}

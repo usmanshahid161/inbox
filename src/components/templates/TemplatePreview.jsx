@@ -1,4 +1,4 @@
-import { Image as ImageIcon, FileText as FileIcon, Video, MapPin, Phone, Link2, Copy } from 'lucide-react'
+import { Image as ImageIcon, FileText as FileIcon, Video, MapPin, Phone, Link2, Copy, ShieldCheck } from 'lucide-react'
 
 function fillExamples(text = '', examples = []) {
   return text.replace(/\{\{\s*(\d+)\s*\}\}/g, (_, n) => {
@@ -7,7 +7,48 @@ function fillExamples(text = '', examples = []) {
   })
 }
 
+function AuthenticationPreview({ template }) {
+  const auth = template?.components?.authentication || {}
+  const otp = template?.components?.buttons?.[0] || {}
+
+  return (
+    <div className="flex h-full flex-col items-center justify-start rounded-xl bg-[#0b141a] p-6">
+      <div className="w-full max-w-sm rounded-2xl bg-[#efeae2] p-3 shadow-xl dark:bg-[#0b141a]">
+        <div className="relative rounded-lg bg-white p-3 shadow-sm before:absolute before:-left-2 before:top-3 before:h-3 before:w-3 before:rotate-45 before:bg-white">
+          <p className="whitespace-pre-wrap text-[14.5px] leading-snug text-ink-900">
+            <span className="font-semibold">123456</span> is your verification code.
+            {auth.addSecurityRecommendation && (
+              <>
+                {' '}
+                <br />
+                For your security, do not share this code with anyone.
+              </>
+            )}
+          </p>
+          {auth.codeExpirationMinutes && (
+            <p className="mt-1.5 text-xs text-ink-400">This code expires in {auth.codeExpirationMinutes} minutes.</p>
+          )}
+          <div className="mt-1 flex justify-end">
+            <span className="text-[11px] text-ink-400">12:30 PM</span>
+          </div>
+        </div>
+
+        <div className="mt-1.5">
+          <div className="flex items-center justify-center gap-1.5 rounded-lg bg-white py-2 text-sm font-medium text-sky-600 shadow-sm">
+            {otp.otpType === 'COPY_CODE' || !otp.otpType ? <Copy className="h-3.5 w-3.5" /> : <ShieldCheck className="h-3.5 w-3.5" />}
+            {otp.otpType === 'COPY_CODE' || !otp.otpType ? 'Copy Code' : 'Autofill'}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function TemplatePreview({ template }) {
+  if (template?.category === 'AUTHENTICATION') {
+    return <AuthenticationPreview template={template} />
+  }
+
   const header = template?.components?.header
   const body = template?.components?.body
   const footer = template?.components?.footer

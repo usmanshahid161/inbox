@@ -28,11 +28,26 @@ export const STATUSES = {
   REJECTED: { value: 'REJECTED', label: 'Rejected', description: 'WhatsApp declined this template' },
   PAUSED: { value: 'PAUSED', label: 'Paused', description: 'Temporarily paused due to quality/feedback score' },
   DISABLED: { value: 'DISABLED', label: 'Disabled', description: 'Disabled by WhatsApp' },
+  ARCHIVED: { value: 'ARCHIVED', label: 'Archived', description: 'Archived due to inactivity — scheduled for deletion in 28 days unless unarchived' },
+  UNARCHIVED: { value: 'UNARCHIVED', label: 'Unarchived', description: 'Restored to its previous status' },
+  DELETED: { value: 'DELETED', label: 'Deleted', description: 'Deleted on WhatsApp' },
+  FLAGGED: { value: 'FLAGGED', label: 'Flagged', description: 'Received negative feedback — at risk of being disabled' },
+  IN_APPEAL: { value: 'IN_APPEAL', label: 'In appeal', description: 'An appeal against rejection/disabling is in progress' },
+  LIMIT_EXCEEDED: { value: 'LIMIT_EXCEEDED', label: 'Limit exceeded', description: 'Account has hit its template limit' },
+  LOCKED: { value: 'LOCKED', label: 'Locked', description: 'Locked and cannot be edited' },
 }
 
 export const STATUS_LIST = Object.values(STATUSES)
 
 export const HEADER_TYPES = ['NONE', 'TEXT', 'IMAGE', 'VIDEO', 'DOCUMENT', 'LOCATION']
+
+// AUTHENTICATION only — Meta generates the actual OTP button text
+// itself; these are the three delivery mechanisms it supports.
+export const OTP_TYPES = [
+  { value: 'COPY_CODE', label: 'Copy code' },
+  { value: 'ONE_TAP', label: 'One-tap autofill (Android)' },
+  { value: 'ZERO_TAP', label: 'Zero-tap autofill (Android)' },
+]
 
 export const BUTTON_TYPES = [
   { value: 'QUICK_REPLY', label: 'Quick reply' },
@@ -81,6 +96,13 @@ export const validateTemplate = (template) => {
 
   if (!template.category) errors.category = 'Category is required'
   if (!template.language) errors.language = 'Language is required'
+
+  // AUTHENTICATION templates are a structurally different shape — no
+  // header, no free-form body/footer text (Meta generates it), exactly
+  // one OTP button. None of the checks below apply to them.
+  if (template.category === 'AUTHENTICATION') {
+    return { ...errors, ...validateAuthenticationTemplate(template) }
+  }
 
   const bodyText = template.components?.body?.text?.trim()
   if (!bodyText) {
@@ -133,8 +155,26 @@ export const validateTemplate = (template) => {
     if (b.type === 'PHONE_NUMBER' && !b.phoneNumber?.trim()) errors[`button_${i}_phone`] = 'Phone number is required'
   })
 
-  if (template.category === 'AUTHENTICATION' && buttons.some((b) => b.type !== 'OTP' && b.type !== 'COPY_CODE')) {
-    errors.buttons = 'Authentication templates only support OTP / copy-code buttons'
+  return errors
+}
+
+// Authentication templates support: an optional security-recommendation
+// line, an optional code-expiration footer, and exactly one OTP button.
+// No header, no custom body/footer text.
+const validateAuthenticationTemplate = (template) => {
+  const errors = {}
+  const auth = template.components?.authentication || {}
+  const buttons = template.components?.buttons || []
+  const otp = buttons[0]
+
+  if (auth.codeExpirationMinutes != null && (auth.codeExpirationMinutes < 1 || auth.codeExpirationMinutes > 90)) {
+    errors.authExpiration = 'Code expiration must be between 1 and 90 minutes'
+  }
+
+  if (!otp || otp.type !== 'OTP' || !otp.otpType) {
+    errors.authOtp = 'Choose an OTP delivery method'
+  } else if (['ONE_TAP', 'ZERO_TAP'].includes(otp.otpType) && (!otp.packageName?.trim() || !otp.signatureHash?.trim())) {
+    errors.authOtp = 'One-tap/zero-tap needs the Android package name and signature hash'
   }
 
   return errors
