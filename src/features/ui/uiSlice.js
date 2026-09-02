@@ -18,13 +18,20 @@ const initialState = {
   isCustomerDetailsDrawerOpen: false, // mobile drawer
   connectionState: 'disconnected', // connecting | connected | disconnected
   toasts: [],
-  confirmDialog: null // { title, description, confirmLabel, tone, onConfirmActionType }
+  confirmDialog: null, // { title, description, confirmLabel, tone, onConfirmActionType }
+  // Bumped whenever a real-time interaction/message event comes in — pages
+  // like Analytics watch this (debounced) to know when to silently refetch
+  // aggregate stats, without needing their own Centrifugo subscription.
+  realtimeSignal: 0
 }
 
 const uiSlice = createSlice({
   name: 'ui',
   initialState,
   reducers: {
+    bumpRealtimeSignal(state) {
+      state.realtimeSignal += 1
+    },
     setTheme(state, action) {
       state.theme = action.payload
       if (typeof window !== 'undefined') localStorage.setItem(THEME_STORAGE_KEY, action.payload)
@@ -83,9 +90,11 @@ export const {
   showToast,
   dismissToast,
   openConfirmDialog,
-  closeConfirmDialog
+  closeConfirmDialog,
+  bumpRealtimeSignal
 } = uiSlice.actions
 
+export const selectRealtimeSignal = (state) => state.ui.realtimeSignal
 export const selectTheme = (state) => state.ui.theme
 export const selectIsMobileSidebarOpen = (state) => state.ui.isMobileSidebarOpen
 export const selectIsCustomerDetailsCollapsed = (state) => state.ui.isCustomerDetailsCollapsed

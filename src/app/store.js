@@ -22,6 +22,7 @@ import quickRepliesReducer from '../features/quickReplies/quickRepliesSlice'
 import breakTypesReducer from '../features/breakTypes/breakTypesSlice'
 import presenceReducer from '../features/presence/presenceSlice'
 import interactionRequestsReducer from '../features/interactionRequests/interactionRequestsSlice'
+import dashboardReducer from '../features/dashboard/dashboardSlice'
 
 const logger = createLogger({
   collapsed: true,
@@ -50,6 +51,7 @@ export const store = configureStore({
     breakTypes: breakTypesReducer,
     presence: presenceReducer,
     interactionRequests: interactionRequestsReducer,
+    dashboard: dashboardReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(logger),

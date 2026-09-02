@@ -41,6 +41,14 @@ const manageAgentApi = {
   async remove(id) {
     const { data } = await api.delete(`${baseUrl}/users/agents/${id}`)
     return data
+  },
+
+  // Self-service — the logged-in user changing their own password
+  // (Settings > Security). Requires the current password, unlike
+  // updatePassword above (an admin resetting someone else's).
+  async changeMyPassword({ currentPassword, newPassword }) {
+    const { data } = await api.put(`${baseUrl}/users/me/password`, { currentPassword, newPassword })
+    return data
   }
 }
 

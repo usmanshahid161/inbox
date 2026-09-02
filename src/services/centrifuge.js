@@ -70,8 +70,6 @@ class CentrifugeService {
       return this.subscriptions.get(channelName)
     }
 
-    console.log(channelName, "channellllllll")
-
     const sub = this.client.newSubscription(channelName)
     if (handlers.onPublication) sub.on('publication', (ctx) => handlers.onPublication(ctx.data))
     if (handlers.onSubscribed) sub.on('subscribed', handlers.onSubscribed)

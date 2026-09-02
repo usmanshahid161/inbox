@@ -35,6 +35,7 @@ import {
 import { fetchQueues, selectQueueOptions } from '../features/queues/queuesSlice'
 import { fetchFlows, selectFlowsList } from '../features/flows/flowsSlice'
 import { openConfirmDialog, showToast } from '../features/ui/uiSlice'
+import ConnectWhatsAppButton from '../components/channels/ConnectWhatsAppButton'
 
 const inputClass =
   'w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-400 dark:border-navy-700 dark:bg-navy-800 dark:text-white'
@@ -331,9 +332,12 @@ export default function WhatsAppChannel() {
             <p className="text-xs text-ink-500 dark:text-navy-400">Numbers connected through the WhatsApp Cloud API</p>
           </div>
         </div>
-        <Button icon={Plus} onClick={() => dispatch(openAddNumberForm())}>
-          Add number
-        </Button>
+        <div className="flex items-center gap-2">
+          <ConnectWhatsAppButton />
+          <Button icon={Plus} onClick={() => dispatch(openAddNumberForm())}>
+            Add number
+          </Button>
+        </div>
       </div>
 
       {status === 'loading' && numbers.length === 0 ? (
@@ -357,56 +361,56 @@ export default function WhatsAppChannel() {
         <div className="overflow-hidden rounded-xl border border-ink-100 bg-white dark:border-navy-800 dark:bg-navy-900">
           <table className="w-full text-left text-sm">
             <thead className="border-b border-ink-100 bg-ink-50 text-xs uppercase tracking-wide text-ink-500 dark:border-navy-800 dark:bg-navy-800/60 dark:text-navy-400">
-              <tr>
-                <th className="px-4 py-3 font-medium">Number</th>
-                <th className="hidden px-4 py-3 font-medium sm:table-cell">Queue</th>
-                <th className="hidden px-4 py-3 font-medium md:table-cell">Flow</th>
-                <th className="px-4 py-3 font-medium">Status</th>
-                <th className="px-4 py-3" />
-              </tr>
+            <tr>
+              <th className="px-4 py-3 font-medium">Number</th>
+              <th className="hidden px-4 py-3 font-medium sm:table-cell">Queue</th>
+              <th className="hidden px-4 py-3 font-medium md:table-cell">Flow</th>
+              <th className="px-4 py-3 font-medium">Status</th>
+              <th className="px-4 py-3" />
+            </tr>
             </thead>
             <tbody className="divide-y divide-ink-100 dark:divide-navy-800">
-              {numbers.map((number) => (
-                <tr key={number._id} className="hover:bg-ink-50 dark:hover:bg-navy-800/60">
-                  <td className="px-4 py-3">
-                    <p className="font-medium text-ink-900 dark:text-white">{number.displayName}</p>
-                    <p className="text-xs text-ink-500 dark:text-navy-400">{number.phoneNumber}</p>
-                  </td>
-                  <td className="hidden px-4 py-3 text-ink-500 dark:text-navy-400 sm:table-cell">
-                    {queueOptions.find((q) => q.id === number.queue)?.label || '—'}
-                  </td>
-                  <td className="hidden px-4 py-3 text-ink-500 dark:text-navy-400 md:table-cell">
-                    {number.flow ? 'Assigned' : '—'}
-                  </td>
-                  <td className="px-4 py-3">
-                    <Badge tone={number.subscribed ? 'success' : 'neutral'}>
-                      {number.subscribed ? 'Subscribed' : 'Not subscribed'}
-                    </Badge>
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <Dropdown
-                      align="right"
-                      trigger={() => (
-                        <button className="rounded-md p-1.5 text-ink-400 hover:bg-ink-100 dark:text-navy-400 dark:hover:bg-navy-800">
-                          <MoreVertical className="h-4 w-4" />
-                        </button>
-                      )}
-                    >
-                      <DropdownItem icon={Settings2} onClick={() => dispatch(openConfigureForm(number._id))}>
-                        Configure
+            {numbers.map((number) => (
+              <tr key={number._id} className="hover:bg-ink-50 dark:hover:bg-navy-800/60">
+                <td className="px-4 py-3">
+                  <p className="font-medium text-ink-900 dark:text-white">{number.displayName}</p>
+                  <p className="text-xs text-ink-500 dark:text-navy-400">{number.phoneNumber}</p>
+                </td>
+                <td className="hidden px-4 py-3 text-ink-500 dark:text-navy-400 sm:table-cell">
+                  {queueOptions.find((q) => q.id === number.queue)?.label || '—'}
+                </td>
+                <td className="hidden px-4 py-3 text-ink-500 dark:text-navy-400 md:table-cell">
+                  {number.flow ? 'Assigned' : '—'}
+                </td>
+                <td className="px-4 py-3">
+                  <Badge tone={number.subscribed ? 'success' : 'neutral'}>
+                    {number.subscribed ? 'Subscribed' : 'Not subscribed'}
+                  </Badge>
+                </td>
+                <td className="px-4 py-3 text-right">
+                  <Dropdown
+                    align="right"
+                    trigger={() => (
+                      <button className="rounded-md p-1.5 text-ink-400 hover:bg-ink-100 dark:text-navy-400 dark:hover:bg-navy-800">
+                        <MoreVertical className="h-4 w-4" />
+                      </button>
+                    )}
+                  >
+                    <DropdownItem icon={Settings2} onClick={() => dispatch(openConfigureForm(number._id))}>
+                      Configure
+                    </DropdownItem>
+                    {number.subscribed && (
+                      <DropdownItem icon={CircleOff} onClick={() => handleUnsubscribeFromRow(number)}>
+                        Unsubscribe
                       </DropdownItem>
-                      {number.subscribed && (
-                        <DropdownItem icon={CircleOff} onClick={() => handleUnsubscribeFromRow(number)}>
-                          Unsubscribe
-                        </DropdownItem>
-                      )}
-                      <DropdownItem icon={Trash2} danger onClick={() => handleDelete(number)}>
-                        Remove
-                      </DropdownItem>
-                    </Dropdown>
-                  </td>
-                </tr>
-              ))}
+                    )}
+                    <DropdownItem icon={Trash2} danger onClick={() => handleDelete(number)}>
+                      Remove
+                    </DropdownItem>
+                  </Dropdown>
+                </td>
+              </tr>
+            ))}
             </tbody>
           </table>
         </div>

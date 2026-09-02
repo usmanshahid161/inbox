@@ -11,7 +11,7 @@ const NAV_ITEMS = [
   { to: '/app/inbox', label: 'Inbox', icon: Inbox, showUnread: true, agentOnly: true },
   { to: '/app/contacts', label: 'Contacts', icon: Users },
   { to: '/app/channels', label: 'Channels', icon: Radio, adminOnly: true },
-  { to: '/app/agents', label: 'Agents', icon: Headphones, adminOnly: true },
+  // { to: '/app/agents', label: 'Agents', icon: Headphones, adminOnly: true },
   { to: '/app/analytics', label: 'Analytics', icon: BarChart3, adminOnly: true },
   { to: '/app/templates', label: 'Templates', icon: LayoutTemplate, adminOnly: true },
   { to: '/app/flows', label: 'Flow Builder', icon: Workflow, adminOnly: true },

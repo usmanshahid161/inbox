@@ -73,6 +73,21 @@ export const unsubscribeWhatsappNumber = createAsyncThunk(
   }
 )
 
+export const completeEmbeddedSignup = createAsyncThunk(
+  'whatsappNumbers/completeEmbeddedSignup',
+  async ({ code, wabaId, phoneNumberId }, { dispatch, rejectWithValue }) => {
+    try {
+      const result = await whatsappChannelApi.completeEmbeddedSignup({ code, wabaId, phoneNumberId })
+      // The connected number now exists (or was updated) — refresh the
+      // list so it shows up without a manual reload.
+      dispatch(fetchWhatsappNumbers())
+      return result
+    } catch (err) {
+      return rejectWithValue(err?.response?.data?.message || 'Could not finish connecting WhatsApp.')
+    }
+  }
+)
+
 export const deleteWhatsappNumber = createAsyncThunk(
   'whatsappNumbers/delete',
   async (id, { rejectWithValue }) => {

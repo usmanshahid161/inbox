@@ -8,6 +8,7 @@ import { updateTenantProfile } from '../features/tenant/tenantSlice'
 import { showToast } from '../features/ui/uiSlice'
 import Button from '../components/common/Button'
 import { ROLES } from '../utils/constants'
+import manageAgentApi from '../services/manageAgentApi'
 
 function Field({ label, children }) {
   return (
@@ -107,32 +108,76 @@ function NotificationsSection() {
 }
 
 function SecuritySection() {
+  const dispatch = useDispatch()
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState(null)
+
+  const handleSubmit = async () => {
+    setError(null)
+
+    if (!currentPassword || !newPassword) {
+      setError('Fill in both fields.')
+      return
+    }
+    if (newPassword.length < 8) {
+      setError('New password must be at least 8 characters.')
+      return
+    }
+    if (newPassword !== confirmPassword) {
+      setError("New passwords don't match.")
+      return
+    }
+
+    setSaving(true)
+    try {
+      await manageAgentApi.changeMyPassword({ currentPassword, newPassword })
+      dispatch(showToast({ message: 'Password updated', tone: 'success' }))
+      setCurrentPassword('')
+      setNewPassword('')
+      setConfirmPassword('')
+    } catch (err) {
+      setError(err?.response?.data?.message || 'Could not update password.')
+    } finally {
+      setSaving(false)
+    }
+  }
+
   return (
     <div className="max-w-lg space-y-4">
       <Field label="Current password">
-        <input type="password" className={inputClass} />
+        <input
+          type="password"
+          value={currentPassword}
+          onChange={(e) => setCurrentPassword(e.target.value)}
+          className={inputClass}
+        />
       </Field>
       <Field label="New password">
-        <input type="password" className={inputClass} />
+        <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className={inputClass} />
       </Field>
-      <Button onClick={() => {}}>Update password</Button>
-      <div className="rounded-lg border border-ink-100 p-4 dark:border-navy-800">
-        <p className="text-sm font-medium text-ink-800 dark:text-navy-100">Two-factor authentication</p>
-        <p className="mt-1 text-xs text-ink-500 dark:text-navy-400">Add an extra layer of security to your account.</p>
-        <Button variant="secondary" size="sm" className="mt-3">
-          Enable 2FA
-        </Button>
-      </div>
+      <Field label="Confirm new password">
+        <input
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          className={inputClass}
+        />
+      </Field>
+      {error && <p className="text-xs text-rose-500">{error}</p>}
+      <Button onClick={handleSubmit} isLoading={saving}>
+        Update password
+      </Button>
     </div>
   )
 }
 
 const SECTIONS = [
-  { id: 'tenant', label: 'Workspace profile', icon: Building2, component: TenantProfileSection },
-  { id: 'account', label: 'Account', icon: User, component: AccountSection },
-  { id: 'notifications', label: 'Notifications', icon: Bell, component: NotificationsSection },
-  { id: 'channels', label: 'Channels', icon: Radio, adminOnly: true, redirect: '/app/channels' },
-  { id: 'agents', label: 'Users & agents', icon: Users, adminOnly: true, redirect: '/app/agents' },
+  // { id: 'tenant', label: 'Workspace profile', icon: Building2, component: TenantProfileSection },
+  // { id: 'account', label: 'Account', icon: User, component: AccountSection },
+  // { id: 'notifications', label: 'Notifications', icon: Bell, component: NotificationsSection },
   { id: 'security', label: 'Security', icon: ShieldCheck, component: SecuritySection }
 ]
 

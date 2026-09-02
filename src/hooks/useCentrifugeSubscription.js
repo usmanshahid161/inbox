@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { centrifugeService } from '../services/centrifuge'
 import { selectAuth } from '../features/auth/authSlice'
-import { setConnectionState, showToast } from '../features/ui/uiSlice'
+import { setConnectionState, showToast, bumpRealtimeSignal } from '../features/ui/uiSlice'
 import {
   interactionUpserted,
   interactionAssigned,
@@ -13,7 +13,6 @@ import {
 import { messageReceived, messageStatusChanged, typingReceived, messageUpdate } from '../features/messages/messagesSlice'
 import { presenceStatusChanged, presenceBreakStarted, presenceBreakEnded } from '../features/presence/presenceSlice'
 import { requestReceived } from '../features/interactionRequests/interactionRequestsSlice'
-import { selectQueueById } from '../features/queues/queuesSlice'
 import { CHANNEL_TYPE } from '../utils/constants'
 
 /**
@@ -55,7 +54,13 @@ export function useCentrifugeSubscription() {
     centrifugeService.connect({ token, tenantId: tenant.id })
 
     const handleMessagesEvent = (data) => {
-      console.log("Event: ", data?.event, "Queue: ", data?.message?.queue, "Message: ", data?.message )
+      // Any real message event (not typing indicators) is something the
+      // dashboard's aggregate stats care about — see Analytics.jsx's
+      // debounced refetch on this signal.
+      if (data.event === 'message.created' || data.event === 'message.update') {
+        safeDispatch(bumpRealtimeSignal())
+      }
+
       switch (data.event) {
         case 'message.created':
           safeDispatch(messageReceived(data.message))
@@ -104,14 +109,20 @@ export function useCentrifugeSubscription() {
     }
 
     const handleInteractionsEvent = (data) => {
-      console.log("Event: ", data?.event, "Queue: ", data?.interaction?.queue, "Interaction: ", data?.interaction )
+      // Interaction created/updated (assign/close/etc) changes the
+      // dashboard's new/closed/unassigned counts — see Analytics.jsx's
+      // debounced refetch on this signal.
+      safeDispatch(bumpRealtimeSignal())
+
       switch (data.event) {
         case 'interaction.created': {
           safeDispatch(interactionUpserted(data.interaction))
 
           // New conversation this agent is eligible to see — surface it
           // as a toast (channel + queue), not just a silent list update.
-          const queueName = queuesRef.current.find((q) => q._id === data.interaction?.queue)?.name
+          // `interaction.queue` is a slug (e.g. "billing_information") —
+          // matched against the queue's own `.slug`, not `._id`.
+          const queueName = queuesRef.current.find((q) => q.slug === data.interaction?.queue)?.name
           const channelLabel =
             data.interaction?.channel?.toUpperCase?.() === CHANNEL_TYPE.WHATSAPP ? 'WhatsApp' : data.interaction?.channel
           safeDispatch(
@@ -184,7 +195,6 @@ export function useCentrifugeSubscription() {
     const agentQueues = user?.role === 'AGENT' ? user?.queues || [] : []
 
     if (agentQueues.length > 0) {
-      console.log(agentQueues, "queusssssssssss")
       agentQueues.forEach((queueId) => {
         centrifugeService.subscribeToTenantChannel(`queue_${queueId}_messages`, { onPublication: handleMessagesEvent })
         centrifugeService.subscribeToTenantChannel(`queue_${queueId}_interactions`, {

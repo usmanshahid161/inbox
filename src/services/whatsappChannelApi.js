@@ -37,6 +37,18 @@ const whatsappChannelApi = {
   async remove(id) {
     const { data } = await api.delete(`${baseUrl}/admin/channels/whatsapp/numbers/${id}`)
     return data
+  },
+
+  // Completes Meta's Embedded Signup flow — exchanges the OAuth `code`
+  // for an access token server-side (needs the app secret, never sent to
+  // the browser) and saves the tenant's real WhatsApp credentials.
+  async completeEmbeddedSignup({ code, wabaId, phoneNumberId }) {
+    const { data } = await api.post(`${baseUrl}/admin/channels/whatsapp/numbers/embedded-signup`, {
+      code,
+      wabaId,
+      phoneNumberId
+    })
+    return data
   }
 }
 
