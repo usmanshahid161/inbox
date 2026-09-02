@@ -121,7 +121,7 @@ export const selectFilteredQueues = createSelector([selectAllQueues, selectQueue
 
 // Handy for dropdowns elsewhere (e.g. Team / Agent forms)
 export const selectQueueOptions = createSelector([selectAllQueues], (items) =>
-  items.map((q) => ({ id: q._id, label: q.name }))
+  items.map((q) => ({ id: q.slug, label: q.name }))
 )
 
 export default queuesSlice.reducer

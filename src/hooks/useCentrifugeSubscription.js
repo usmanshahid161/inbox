@@ -184,6 +184,7 @@ export function useCentrifugeSubscription() {
     const agentQueues = user?.role === 'AGENT' ? user?.queues || [] : []
 
     if (agentQueues.length > 0) {
+      console.log(agentQueues, "queusssssssssss")
       agentQueues.forEach((queueId) => {
         centrifugeService.subscribeToTenantChannel(`queue_${queueId}_messages`, { onPublication: handleMessagesEvent })
         centrifugeService.subscribeToTenantChannel(`queue_${queueId}_interactions`, {

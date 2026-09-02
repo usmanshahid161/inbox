@@ -1,7 +1,5 @@
-import { useSelector } from 'react-redux'
 import { Users, ListOrdered, Clock, Phone, Hash, Info } from 'lucide-react'
 import Dropdown from '../common/Dropdown'
-import { selectQueueById } from '../../features/queues/queuesSlice'
 import { channelLabel } from '../common/ChannelIcon'
 import { formatFullDateTime } from '../../utils/formatters'
 
@@ -18,7 +16,6 @@ function Row({ icon: Icon, label, value }) {
 }
 
 export default function ConversationInfoPopover({ interaction }) {
-  const queue = useSelector((state) => selectQueueById(state, interaction?.queue))
   const activeParticipants = (interaction?.participants || []).filter((p) => p.status)
 
   // Participants mix the customer (added as the first participant when the
@@ -78,7 +75,7 @@ export default function ConversationInfoPopover({ interaction }) {
           )}
         </div>
 
-        <Row icon={ListOrdered} label="Queue" value={queue?.name || '—'} />
+        <Row icon={ListOrdered} label="Queue" value={interaction.queue || '—'} />
         <Row
           icon={Phone}
           label={`${channelLabel(interaction?.channel?.toUpperCase?.())} number`}

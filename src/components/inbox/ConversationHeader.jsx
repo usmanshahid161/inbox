@@ -23,7 +23,6 @@ import {
 } from '../../features/interactions/interactionsSlice'
 
 import { selectAllTags } from '../../features/tags/tagsSlice'
-import { selectQueueById } from '../../features/queues/queuesSlice'
 
 import {
   toggleCustomerDetails,
@@ -77,7 +76,6 @@ export default function ConversationHeader({
   const dispatch = useDispatch()
 
   const currentUser = useSelector(selectCurrentUser)
-  const queue = useSelector((state) => selectQueueById(state, interaction?.queue))
   const collapsed = useSelector(
     selectIsCustomerDetailsCollapsed
   )
@@ -357,9 +355,9 @@ export default function ConversationHeader({
           : 'Open'}
       </Badge>
 
-      {queue?.name && (
+      {interaction?.queue && (
         <Badge tone="brand" className="hidden sm:inline-flex">
-          {queue.name}
+          {interaction?.queue}
         </Badge>
       )}
 
