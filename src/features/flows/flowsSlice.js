@@ -1,6 +1,6 @@
 // src/features/flows/flowsSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import flowsAPI from '../../services/flowsAPI'
+import flowsAPI from '../../services/flowsApi.js'
 
 const initialState = {
   items: [],           // list view (name, status, timestamps only)
@@ -29,7 +29,6 @@ export const createFlow = createAsyncThunk('flows/create', async (payload, { rej
 
 export const updateFlow = createAsyncThunk('flows/update', async ({ id, payload }, { rejectWithValue }) => {
   try {
-    console.log(id, payload, "payloaddddddddd")
     return await flowsAPI.update(id, payload)
   } catch (err) {
     return rejectWithValue(err?.response?.data?.message || 'Failed to save flow')
