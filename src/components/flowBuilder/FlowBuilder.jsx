@@ -17,7 +17,7 @@ import { Trash2 } from 'lucide-react'
 import { showToast } from '../../features/ui/uiSlice.js'
 
 import FlowTopBar          from './Flowtopbar.jsx'
-import NodePalette         from './NodePalette'
+import NodePalette         from './Nodepalette.jsx'
 import NodeConfigPanel     from './NodeConfigPanel.jsx'
 import FlowTestPanel       from './FlowTestPanel.jsx'
 import {nodeTypes}         from './index.jsx';
