@@ -1,10 +1,13 @@
 import axios from 'axios'
 import config from '../config'
 
-const baseURL = config.BASE_URL
+// Every services/*Api.js file builds its own full URL (shared host + its
+// own port), so this instance's own baseURL is never actually used for
+// normal calls — only the refresh-token call below needs one, since it
+// specifically has to hit auth service's port.
+const AUTH_BASE_URL = `${config.BASE_HOST}:3034`
 
 const api = axios.create({
-  baseURL,
   headers: {
     'Content-Type': 'application/json'
   }
@@ -132,7 +135,7 @@ api.interceptors.response.use(
       if (!refreshPromise) {
         refreshPromise = axios
           .post(
-            `${baseURL}/auth/refresh`,
+            `${AUTH_BASE_URL}/auth/refresh`,
             {
               refreshToken
             },

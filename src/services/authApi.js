@@ -1,12 +1,13 @@
 import api from './api'
 import { mockLogin } from '../mocks/mockApi'
 import axios         from 'axios';
+import config from '../config'
 
 // Flip VITE_USE_MOCK_API to "false" once the real backend is reachable.
 // Every function below already has the real axios call in place; only the
 // mock branch needs to be removed at that point.
 const USE_MOCK = import.meta.env.VITE_USE_MOCK_API !== 'false'
-const baseUrl = "http://localhost:3034"
+const baseUrl = `${config.BASE_HOST}:3034`
 
 const authApi = {
   async login(credentials) {

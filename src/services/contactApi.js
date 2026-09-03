@@ -1,6 +1,7 @@
 import api from './api'
+import config from '../config'
 
-const baseUrl = 'http://localhost:3036'
+const baseUrl = `${config.BASE_HOST}:3036`
 
 // GET    /contacts                              -> { data: Contact[] }   ?search=
 // GET    /contacts/:id                           -> { data: Contact }

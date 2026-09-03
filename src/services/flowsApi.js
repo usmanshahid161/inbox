@@ -1,6 +1,7 @@
 import api from './api'
+import config from '../config'
 
-const baseUrl = 'http://localhost:3032'
+const baseUrl = `${config.BASE_HOST}:3032`
 
 const flowsAPI = {
   async list(params) {

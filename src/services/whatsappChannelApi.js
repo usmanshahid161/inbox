@@ -1,6 +1,7 @@
 import api from './api'
+import config from '../config'
 
-const baseUrl = 'http://localhost:3033'
+const baseUrl = `${config.BASE_HOST}:3033`
 
 // Backend contract (to be implemented):
 // GET    /admin/channels/whatsapp/numbers               -> { data: WhatsAppNumber[] }

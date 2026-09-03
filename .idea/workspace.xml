@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="9f835c84-3fb1-4f69-9123-3933b50460dd" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ui.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/postcss.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/postcss.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/Avatar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/Avatar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/Badge.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/Badge.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/Button.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/Button.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/ChannelIcon.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/ChannelIcon.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/ConfirmDialog.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/ConfirmDialog.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/Dropdown.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/Dropdown.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/EmptyState.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/EmptyState.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/Loader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/Loader.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/Modal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/Modal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/SearchableMultiSelect.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/SearchableMultiSelect.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/ToastContainer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/ToastContainer.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/inbox/AttachmentPreview.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inbox/AttachmentPreview.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/inbox/ConversationHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inbox/ConversationHeader.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/inbox/ConversationInfoPopover.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inbox/ConversationInfoPopover.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/inbox/ConversationItem.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inbox/ConversationItem.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/inbox/ConversationList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inbox/ConversationList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/inbox/CustomerDetails.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inbox/CustomerDetails.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/inbox/InboxFilters.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inbox/InboxFilters.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/inbox/MessageBubble.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inbox/MessageBubble.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/inbox/MessageComposer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inbox/MessageComposer.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/inbox/MessageList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inbox/MessageList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/inbox/RequestToastStack.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inbox/RequestToastStack.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/inbox/TransferShareControl.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inbox/TransferShareControl.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layout/AppLayout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/AppLayout.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layout/BreakControl.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/BreakControl.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/templates/ButtonsEditor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/templates/ButtonsEditor.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/templates/TemplateFilters.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/templates/TemplateFilters.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/templates/TemplateFormModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/templates/TemplateFormModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/templates/TemplateList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/templates/TemplateList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/templates/TemplatePreview.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/templates/TemplatePreview.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/templates/TemplateStatusBadge.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/templates/TemplateStatusBadge.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/analytics/analyticsSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/analytics/analyticsSlice.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/breakTypes/breakTypesSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/breakTypes/breakTypesSlice.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/contacts/contactsSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/contacts/contactsSlice.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/groups/groupsSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/groups/groupsSlice.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/interactionRequests/interactionRequestsSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/interactionRequests/interactionRequestsSlice.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/interactions/interactionsSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/interactions/interactionsSlice.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/manageAgents/manageAgentsSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/manageAgents/manageAgentsSlice.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/messages/messagesSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/messages/messagesSlice.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/presence/presenceSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/presence/presenceSlice.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/queues/queuesSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/queues/queuesSlice.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/quickReplies/quickRepliesSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/quickReplies/quickRepliesSlice.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/tags/tagsSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/tags/tagsSlice.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/teams/teamsSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/teams/teamsSlice.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/templates/templatesSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/templates/templatesSlice.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/templates/waConstants.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/templates/waConstants.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/tenant/tenantSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/tenant/tenantSlice.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/ui/uiSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/ui/uiSlice.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/whatsappChannel/whatsappNumbersSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/whatsappChannel/whatsappNumbersSlice.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/useCentrifugeSubscription.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useCentrifugeSubscription.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/useClickOutside.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useClickOutside.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/useDebounce.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useDebounce.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/useMediaQuery.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useMediaQuery.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/usePresenceHeartbeat.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/usePresenceHeartbeat.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/useThemeEffect.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useThemeEffect.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mocks/mockApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mocks/mockApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mocks/mockData.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mocks/mockData.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/AgentForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/AgentForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Analytics.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Analytics.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/BreakTypeForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/BreakTypeForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/BreakTypes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/BreakTypes.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Channels.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Channels.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Contacts.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Contacts.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/GroupForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/GroupForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Groups.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Groups.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Inbox.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Inbox.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/ManageAgents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ManageAgents.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/QueueForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/QueueForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Queues.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Queues.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/QuickReplies.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/QuickReplies.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/QuickReplyForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/QuickReplyForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Settings.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Settings.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/TagForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/TagForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Tags.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Tags.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/TeamForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/TeamForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Teams.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Teams.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Templates.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Templates.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/WhatsAppChannel.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/WhatsAppChannel.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/DefaultRedirect.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DefaultRedirect.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/analyticsApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/analyticsApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/authApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/authApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/breakTypeApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/breakTypeApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/centrifuge.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/centrifuge.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/contactApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/contactApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/dashboardApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/dashboardApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/flowsApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/flowsApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/groupApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/groupApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/interactionApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/interactionApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/interactionRequestApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/interactionRequestApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/manageAgentApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/manageAgentApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/messageApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/messageApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/presenceApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/presenceApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/queueApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/queueApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/quickReplyApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/quickReplyApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/tagApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/tagApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/teamApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/teamApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/templatesAPI.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/templatesAPI.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/whatsappChannelApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/whatsappChannelApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/constants.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/formatters.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/formatters.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/resetOnLogout.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/resetOnLogout.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/whatsappWindow.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/whatsappWindow.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/vite.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;usmanshahid161&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/usmanshahid161/inbox.git&quot;,
+    &quot;accountId&quot;: &quot;62c73eca-3838-46f9-b7e4-d9f723f6a155&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="3IpC408977DiN0QDQzvBVJLl2kO" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/usman.shahid/WebstormProjects/usman_shahid/chat_app/inbox",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "yarn",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-WS-243.22562.222" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9f835c84-3fb1-4f69-9123-3933b50460dd" name="Changes" comment="" />
+      <created>1788451928616</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1788451928616</updated>
+      <workItem from="1788451929987" duration="65000" />
+      <workItem from="1788452052594" duration="142000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

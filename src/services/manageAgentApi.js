@@ -1,9 +1,10 @@
 import api from './api'
+import config from '../config'
 
 // This one talks to the AUTH service (not the port-3032 business service) —
 // creating/editing an agent means creating login credentials, which only
 // the auth service is allowed to touch. Port/env matches auth's server.js.
-const baseUrl = 'http://localhost:3034'
+const baseUrl = `${config.BASE_HOST}:3034`
 
 // Actual contract (implemented in the auth service):
 // GET    /users                    -> { data: Agent[] }                body: -

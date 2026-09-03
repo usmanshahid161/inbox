@@ -1,8 +1,9 @@
 import api                                              from './api'
 import { mockFetchInteractions, mockUpdateInteraction } from '../mocks/mockApi'
+import config from '../config'
 
 const USE_MOCK = import.meta.env.VITE_USE_MOCK_API !== 'false'
-const baseUrl = 'http://localhost:3032'
+const baseUrl = `${config.BASE_HOST}:3032`
 
 const interactionApi = {
   async list(params) {

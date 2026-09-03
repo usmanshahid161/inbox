@@ -1,6 +1,7 @@
 import api from './api'
+import config from '../config'
 
-const baseUrl = 'http://localhost:3037'
+const baseUrl = `${config.BASE_HOST}:3037`
 
 const dashboardApi = {
   async get(filters) {
