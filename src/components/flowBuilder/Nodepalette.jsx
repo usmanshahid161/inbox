@@ -1,5 +1,5 @@
 // src/components/flowbuilder/NodePalette.jsx
-import { NODE_TYPES_META, PALETTE_ORDER, COLOR_CLASSES } from './flowConstants'
+import { NODE_TYPES_META, PALETTE_ORDER, COLOR_CLASSES } from './Flowconstants.jsx'
 
 export default function NodePalette() {
   const onDragStart = (e, type) => {

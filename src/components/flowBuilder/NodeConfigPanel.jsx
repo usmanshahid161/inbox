@@ -1,7 +1,7 @@
 // src/components/flowbuilder/NodeConfigPanel.jsx
 import { useState, useEffect } from 'react'
 import { X, Plus, Trash2 } from 'lucide-react'
-import { NODE_TYPES_META, COLOR_CLASSES } from './flowConstants'
+import { NODE_TYPES_META, COLOR_CLASSES } from './Flowconstants.jsx'
 
 const inputClass =
   'w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-400 dark:border-navy-700 dark:bg-navy-800 dark:text-white'
