@@ -120,15 +120,63 @@ const ContactPreview = ({ data = {} }) => {
   )
 }
 
+// Cross-origin URLs (S3 etc) don't reliably honor a plain <a download> —
+// browsers often just navigate to the URL instead of downloading it,
+// since the `download` attribute is only guaranteed for same-origin
+// links. Fetching the file as a blob and downloading *that* works
+// regardless of origin. Falls back to opening in a new tab if the fetch
+// itself fails (e.g. CORS blocked on the bucket).
+const handleDownload = async (e, url, filename) => {
+  e.preventDefault()
+  e.stopPropagation()
+
+  try {
+    const response = await fetch(url)
+    const blob = await response.blob()
+    const blobUrl = window.URL.createObjectURL(blob)
+
+    const link = document.createElement('a')
+    link.href = blobUrl
+    link.download = filename || 'download'
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+
+    window.URL.revokeObjectURL(blobUrl)
+  } catch {
+    window.open(url, '_blank', 'noreferrer')
+  }
+}
+
+const DownloadButton = ({ url, filename }) => (
+  <button
+    type="button"
+    onClick={(e) => handleDownload(e, url, filename)}
+    className="absolute right-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm hover:bg-black/70"
+    aria-label="Download"
+  >
+    <Download className="h-3.5 w-3.5" />
+  </button>
+)
+
 export default function AttachmentPreview({ attachment }) {
   const { type, size, data } = attachment
   const url = data?.url
+  // `name` is what every attachment-creation path actually sets (see
+  // MessageComposer.jsx) — `originalName` here was never a real field,
+  // which meant a filename was never passed to the download and the
+  // browser had to guess an extension from the MIME type alone (hence
+  // downloads landing as .jfif instead of .jpg).
+  const filename = data?.name
 
-  if (type === MESSAGE_TYPE.IMAGE) {
+  if (type === MESSAGE_TYPE.IMAGE || type === MESSAGE_TYPE.STICKER) {
     return (
-      <a href={url} target="_blank" rel="noreferrer" className="block overflow-hidden rounded-lg">
-        <img src={url} alt={ 'Attachment'} className="max-h-64 w-full max-w-xs object-cover" loading="lazy" />
-      </a>
+      <div className="relative max-w-xs overflow-hidden rounded-lg">
+        <a href={url} target="_blank" rel="noreferrer" className="block overflow-hidden rounded-lg">
+          <img src={url} alt={'Attachment'} className="max-h-64 w-full max-w-xs object-cover" loading="lazy" />
+        </a>
+        <DownloadButton url={url} filename={filename} />
+      </div>
     )
   }
 
@@ -136,6 +184,7 @@ export default function AttachmentPreview({ attachment }) {
     return (
       <div className="relative max-w-xs overflow-hidden rounded-lg bg-ink-900">
         <video src={url} controls className="max-h-64 w-full" preload="metadata" />
+        <DownloadButton url={url} filename={filename} />
       </div>
     )
   }

@@ -1214,6 +1214,13 @@
   "resolved" "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.407.tgz"
   "version" "1.5.407"
 
+"emoji-picker-react@^4.12.0":
+  "integrity" "sha512-QPhs9+y6btRXH80eTe67d678ufgv+vjd4YETU1mp9b8LqYS4bMP3OxmpVzG6Y11AhyvzaizZiuxD5I4HYeIPVw=="
+  "resolved" "https://registry.npmjs.org/emoji-picker-react/-/emoji-picker-react-4.19.4.tgz"
+  "version" "4.19.4"
+  dependencies:
+    "flairup" "1.0.0"
+
 "es-abstract-get@^1.0.0":
   "integrity" "sha512-6PMWXpdhshVvFp+FoWYs1EvG1Nj0tvk0dZM+XcK0xMEM1czRVcP6ohqPWHy6qPagSpC8j4+p89WXlT+xXJs/fg=="
   "resolved" "https://registry.npmjs.org/es-abstract-get/-/es-abstract-get-1.0.0.tgz"
@@ -1573,6 +1580,11 @@
   dependencies:
     "locate-path" "^6.0.0"
     "path-exists" "^4.0.0"
+
+"flairup@1.0.0":
+  "integrity" "sha512-IKlE+pNvL2R+kVL1kEhUYqRxVqeFnjiIvHWDMLFXNaqyUdFXQM2wte44EfMYJNHkW16X991t2Zg8apKkhv7OBA=="
+  "resolved" "https://registry.npmjs.org/flairup/-/flairup-1.0.0.tgz"
+  "version" "1.0.0"
 
 "flat-cache@^3.0.4":
   "integrity" "sha512-CYcENa+FtcUKLmhhqyctpclsq7QF38pKjZHsGNiSQF5r4FtoKDWabFDl3hzaEQMvT1LHEysw5twgLvpYYb4vbw=="
@@ -2586,7 +2598,7 @@
   dependencies:
     "@remix-run/router" "1.23.3"
 
-"react@^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc", "react@^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0", "react@^16.9.0 || ^17.0.0 || ^18 || ^19", "react@^18.0 || ^19", "react@^18.3.1", "react@>=16.8", "react@>=17":
+"react@^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc", "react@^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0", "react@^16.9.0 || ^17.0.0 || ^18 || ^19", "react@^18.0 || ^19", "react@^18.3.1", "react@>=16", "react@>=16.8", "react@>=17":
   "integrity" "sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.3.1.tgz"
   "version" "18.3.1"

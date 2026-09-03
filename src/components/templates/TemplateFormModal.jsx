@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { X, AlertTriangle, Save, Send } from 'lucide-react'
+import { X, AlertTriangle, Save, Send, Upload, Loader2 } from 'lucide-react'
+import messageApi from '../../services/messageApi'
+import { FILE_RULES } from '../../utils/constants'
+import { formatFileSize } from '../../utils/formatters'
 import {
   selectIsFormOpen,
   selectEditingTemplate,
@@ -47,6 +50,8 @@ export default function TemplateFormModal() {
   const [form, setForm] = useState(emptyTemplate)
   const [errors, setErrors] = useState({})
   const [touched, setTouched] = useState(false)
+  const [headerMediaUploading, setHeaderMediaUploading] = useState(false)
+  const [headerMediaUploadError, setHeaderMediaUploadError] = useState(null)
 
   useEffect(() => {
     if (isOpen) {
@@ -79,6 +84,44 @@ export default function TemplateFormModal() {
       next.components.body.examples = examples
       return next
     })
+  }
+
+  // Uploads the sample header media (same S3-backed endpoint chat
+  // attachments use — see messageApi.js/center-service's controllers/
+  // upload.js, which now accepts a request with no interactionId for
+  // exactly this case) and fills the exampleUrl field with the result,
+  // instead of the admin having to host the file somewhere themselves
+  // and paste in a URL.
+  const handleHeaderMediaUpload = async (e) => {
+    const file = e.target.files?.[0]
+    e.target.value = '' // allow re-selecting the same file later
+    if (!file) return
+
+    setHeaderMediaUploadError(null)
+
+    const rules = FILE_RULES[headerType]
+    if (rules) {
+      if (!rules.types.includes(file.type)) {
+        setHeaderMediaUploadError(`Unsupported file type for ${headerType.toLowerCase()}.`)
+        return
+      }
+      if (file.size > rules.maxSize) {
+        setHeaderMediaUploadError(`File is too large — max ${formatFileSize(rules.maxSize)}.`)
+        return
+      }
+    }
+
+    setHeaderMediaUploading(true)
+    try {
+      const result = await messageApi.uploadFile(file)
+      const url = result?.data?.url
+      if (!url) throw new Error('No URL returned')
+      updateField('components.header.exampleUrl', url)
+    } catch {
+      setHeaderMediaUploadError('Upload failed — try again.')
+    } finally {
+      setHeaderMediaUploading(false)
+    }
   }
 
   const runValidation = () => {
@@ -245,13 +288,41 @@ export default function TemplateFormModal() {
                 )}
 
                 {['IMAGE', 'VIDEO', 'DOCUMENT'].includes(headerType) && (
-                  <input
-                    type="text"
-                    value={form.components.header.exampleUrl}
-                    onChange={(e) => updateField('components.header.exampleUrl', e.target.value)}
-                    placeholder="Publicly accessible sample media URL (required)"
-                    className="mt-2 w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-navy-700 dark:bg-navy-900 dark:text-ink-100"
-                  />
+                  <div className="mt-2 space-y-1.5">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={form.components.header.exampleUrl}
+                        onChange={(e) => updateField('components.header.exampleUrl', e.target.value)}
+                        placeholder="Publicly accessible sample media URL (required)"
+                        className="flex-1 rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-navy-700 dark:bg-navy-900 dark:text-ink-100"
+                      />
+                      <label
+                        className={`flex h-[38px] shrink-0 cursor-pointer items-center gap-1.5 rounded-lg border border-ink-200 px-3 text-xs font-medium text-ink-600 hover:bg-ink-50 dark:border-navy-700 dark:text-ink-300 dark:hover:bg-navy-800 ${
+                          headerMediaUploading ? 'pointer-events-none opacity-60' : ''
+                        }`}
+                      >
+                        {headerMediaUploading ? (
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        ) : (
+                          <Upload className="h-3.5 w-3.5" />
+                        )}
+                        Upload
+                        <input
+                          type="file"
+                          accept={FILE_RULES[headerType]?.types.join(',')}
+                          className="hidden"
+                          disabled={headerMediaUploading}
+                          onChange={handleHeaderMediaUpload}
+                        />
+                      </label>
+                    </div>
+                    <p className="text-[11px] text-ink-400">
+                      Max {formatFileSize(FILE_RULES[headerType]?.maxSize || 0)} —{' '}
+                      {FILE_RULES[headerType]?.types.map((t) => t.split('/')[1]).join(', ')}
+                    </p>
+                    {headerMediaUploadError && <p className="text-xs text-rose-500">{headerMediaUploadError}</p>}
+                  </div>
                 )}
                 {touched && errors.header && <p className="mt-1 text-xs text-rose-500">{errors.header}</p>}
                 {touched && errors.headerMedia && <p className="mt-1 text-xs text-rose-500">{errors.headerMedia}</p>}
@@ -419,14 +490,14 @@ export default function TemplateFormModal() {
             </button>
             <button
               onClick={() => handleSave(true)}
-              disabled={saving}
+              disabled={saving || headerMediaUploading}
               className="inline-flex items-center gap-1.5 rounded-lg border border-ink-200 px-4 py-2 text-sm font-medium text-ink-700 hover:bg-ink-50 disabled:opacity-50 dark:border-navy-700 dark:text-ink-200 dark:hover:bg-navy-800"
             >
               <Save className="h-4 w-4" /> Save as draft
             </button>
             <button
               onClick={() => handleSave(false)}
-              disabled={saving}
+              disabled={saving || headerMediaUploading}
               className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-50"
             >
               <Send className="h-4 w-4" /> {saving ? 'Submitting...' : 'Submit for review'}

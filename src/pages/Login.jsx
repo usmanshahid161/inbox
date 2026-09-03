@@ -2,7 +2,11 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, useLocation } from 'react-router-dom'
 import { MessageSquare, Eye, EyeOff, Loader2 } from 'lucide-react'
-import { login, selectAuth, selectIsAuthenticated, clearAuthError } from '../features/auth/authSlice'
+import { login, selectAuth, selectIsAuthenticated, clearAuthError } from '../features/auth/authSlice.js'
+
+// Mirrors authApi.js's own flag — this text should only claim "any
+// credentials work" when that's actually true, not unconditionally.
+const USE_MOCK = import.meta.env.VITE_USE_MOCK_API !== 'false'
 
 export default function Login() {
   const dispatch = useDispatch()
@@ -45,17 +49,17 @@ export default function Login() {
           )}
 
           <div className="space-y-1.5">
-            <label htmlFor="email" className="text-xs font-medium text-ink-600 dark:text-navy-300">
-              Work email
+            <label htmlFor="identifier" className="text-xs font-medium text-ink-600 dark:text-navy-300">
+              Email or username
             </label>
             <input
-              id="email"
-              type="email"
+              id="identifier"
+              type="text"
               required
-              autoComplete="email"
+              autoComplete="username"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter Email"
+              placeholder="Enter email or username"
               className="w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm text-ink-900 placeholder:text-ink-400 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-400 dark:border-navy-700 dark:bg-navy-800 dark:text-white dark:placeholder:text-navy-400"
             />
           </div>
@@ -95,9 +99,11 @@ export default function Login() {
             Sign in
           </button>
 
-          <p className="text-center text-xs text-ink-400 dark:text-navy-500">
-            Demo mode is on — any email and password will sign you in.
-          </p>
+          {USE_MOCK && (
+            <p className="text-center text-xs text-ink-400 dark:text-navy-500">
+              Demo mode is on — any email and password will sign you in.
+            </p>
+          )}
         </form>
       </div>
     </div>

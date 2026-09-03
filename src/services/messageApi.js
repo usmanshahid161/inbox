@@ -29,7 +29,10 @@ const messageApi = {
     const formData = new FormData()
 
     formData.append('file', file)
-    formData.append('interactionId', interactionId)
+    // Optional now — a template's sample header media (uploaded from the
+    // admin Templates page) doesn't belong to any interaction at all.
+    // See center-service's controllers/upload.js for the matching change.
+    if (interactionId) formData.append('interactionId', interactionId)
     // Was hardcoded to 'audio' regardless of the actual file — harmless
     // today since the backend's fileUpload controller doesn't read this
     // field at all, but misleading to anyone debugging later. Derived

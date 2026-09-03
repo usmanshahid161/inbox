@@ -8,11 +8,11 @@ import Avatar from '../common/Avatar'
 const NAV_ITEMS = [
   // Agent-only — admins don't work conversations, so Inbox is hidden from
   // them entirely (matches the route guard on /app/inbox — see RoleRoute).
+  { to: '/app/analytics', label: 'Analytics', icon: BarChart3, adminOnly: true },
   { to: '/app/inbox', label: 'Inbox', icon: Inbox, showUnread: true, agentOnly: true },
   { to: '/app/contacts', label: 'Contacts', icon: Users },
   { to: '/app/channels', label: 'Channels', icon: Radio, adminOnly: true },
   // { to: '/app/agents', label: 'Agents', icon: Headphones, adminOnly: true },
-  { to: '/app/analytics', label: 'Analytics', icon: BarChart3, adminOnly: true },
   { to: '/app/templates', label: 'Templates', icon: LayoutTemplate, adminOnly: true },
   { to: '/app/flows', label: 'Flow Builder', icon: Workflow, adminOnly: true },
   { to: '/app/admin/tags', label: 'Tags', icon: TagIcon, adminOnly: true },

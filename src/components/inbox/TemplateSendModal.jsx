@@ -173,7 +173,10 @@ export default function TemplateSendModal({ isOpen, onClose, onSend, interaction
       // So the sent message shows the actual media in the chat thread too,
       // not just in Meta's copy — MessageBubble renders from `attachments`,
       // which `components` alone doesn't feed.
-      headerMedia: isMediaHeader && headerMediaUrl ? { type: selected.components.header.type, url: headerMediaUrl } : null,
+      headerMedia:
+        isMediaHeader && headerMediaUrl
+          ? { type: selected.components.header.type, url: headerMediaUrl, filename: headerMediaFilename }
+          : null,
     })
 
     setSending(false)

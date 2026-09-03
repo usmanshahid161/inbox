@@ -1,9 +1,11 @@
 import { useRef, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Recorder } from 'vmsg'
+import EmojiPicker from 'emoji-picker-react'
 import {
   Paperclip,
   Smile,
+  Sticker,
   Send,
   X,
   FileText,
@@ -18,15 +20,13 @@ import { selectCurrentUser } from '../../features/auth/authSlice.js'
 import { selectSelectedInteraction } from '../../features/interactions/interactionsSlice.js'
 import { addOptimisticMessage, sendMessage } from '../../features/messages/messagesSlice'
 import { selectAllQuickReplies } from '../../features/quickReplies/quickRepliesSlice'
-import { showToast } from '../../features/ui/uiSlice'
+import { showToast, selectTheme } from '../../features/ui/uiSlice'
 import { useAuth } from '../../hooks/useAuth'
 import messageApi from '../../services/messageApi.js'
 import { formatFileSize } from '../../utils/formatters'
 import { MESSAGE_TYPE, INTERACTION_STATUS, FILE_RULES } from '../../utils/constants'
 import { getWhatsappWindowStatus } from '../../utils/whatsappWindow'
 import TemplateSendModal                                from './TemplateSendModal.jsx'
-
-const EMOJIS = ['😀', '😂', '😍', '👍', '🙏', '🎉', '❤️', '😢', '🔥', '👀']
 
 const SUPPORTED_DOC_INFO = [
   { category: 'Image', formats: 'JPEG, PNG', size: '5 MB' },
@@ -119,7 +119,9 @@ export default function MessageComposer({ interactionId, interactionStatus }) {
 
   const [text, setText] = useState('')
   const [pendingAttachments, setPendingAttachments] = useState([])
+  const theme = useSelector(selectTheme)
   const [showEmoji, setShowEmoji] = useState(false)
+  const [showStickers, setShowStickers] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
 
   // Modals state
@@ -342,6 +344,39 @@ export default function MessageComposer({ interactionId, interactionStatus }) {
     if (textareaRef.current) textareaRef.current.style.height = 'auto'
   }
 
+  // Sends immediately on click — unlike the emoji picker above, which just
+  // inserts into the text field for a normal message. This is its own
+  // message the moment you pick one, same as a real sticker would be.
+  const handleSendSticker = (emoji) => {
+    if (isUploading || windowClosed) return
+
+    const author = {
+      id: currentUser?.id || currentUser?._id,
+      name: currentUser?.name,
+      role: currentUser?.role
+    }
+    const recipient = selectedInteraction?.participants.find((p) => p?.role === 'customer')
+
+    const message = {
+      author,
+      interactionId,
+      message: emoji,
+      messageType: MESSAGE_TYPE.TEXT,
+      attachments: [],
+      direction: 1,
+      channel: 'whatsapp',
+      extension: selectedInteraction?.extension,
+      recipient: recipient?.id,
+      tenantId: selectedInteraction?.tenantId,
+      status: { message: 'SENDING' }
+    }
+
+    dispatch(addOptimisticMessage({ interactionId, message: emoji, messageType: MESSAGE_TYPE.TEXT, attachments: [], author }))
+    dispatch(sendMessage({ message })).unwrap().catch(() => dispatch(showToast({ message: 'Sticker failed to send.', tone: 'danger' })))
+
+    setShowStickers(false)
+  }
+
   // Sends an approved WhatsApp template message, built by TemplateSendModal
   const handleSendTemplate = (templatePayload) => {
     const author = {
@@ -356,7 +391,7 @@ export default function MessageComposer({ interactionId, interactionStatus }) {
     // MessageBubble can show the same media in our own thread, same as a
     // regular multimedia message.
     const attachments = templatePayload.headerMedia
-      ? [{ type: templatePayload.headerMedia.type, data: { url: templatePayload.headerMedia.url } }]
+      ? [{ type: templatePayload.headerMedia.type, data: { url: templatePayload.headerMedia.url, name: templatePayload.headerMedia.filename } }]
       : []
 
     const message = {
@@ -471,6 +506,15 @@ export default function MessageComposer({ interactionId, interactionStatus }) {
         </button>
 
         <button
+          onClick={() => setShowStickers((s) => !s)}
+          disabled={windowClosed || isUploading}
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-ink-500 hover:bg-ink-100 disabled:opacity-40 dark:text-navy-300 dark:hover:bg-navy-800"
+          title="Send a sticker"
+        >
+          <Sticker className="h-4.5 w-4.5" />
+        </button>
+
+        <button
           onClick={() => setIsFileModalOpen(true)}
           disabled={hasAttachments || isUploading || windowClosed}
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-ink-500 hover:bg-ink-100 disabled:opacity-40 dark:text-navy-300 dark:hover:bg-navy-800"
@@ -499,16 +543,33 @@ export default function MessageComposer({ interactionId, interactionStatus }) {
 
         <div className="relative flex-1">
           {showEmoji && (
-            <div className="absolute bottom-11 left-0 z-20 grid grid-cols-5 gap-1 rounded-lg border border-ink-100 bg-white p-2 shadow-popover dark:border-navy-700 dark:bg-navy-800">
-              {EMOJIS.map((emoji) => (
-                <button
-                  key={emoji}
-                  onClick={() => setText((t) => t + emoji)}
-                  className="rounded p-1 text-lg hover:bg-ink-100 dark:hover:bg-navy-700"
-                >
-                  {emoji}
-                </button>
-              ))}
+            <div className="absolute bottom-11 left-0 z-20 shadow-popover">
+              <EmojiPicker
+                theme={theme}
+                onEmojiClick={(emojiData) => setText((t) => t + emojiData.emoji)}
+                width={320}
+                height={380}
+                previewConfig={{ showPreview: false }}
+              />
+            </div>
+          )}
+
+          {showStickers && (
+            <div className="absolute bottom-11 left-0 z-20 shadow-popover">
+              {/* Same full emoji set as the picker above — WhatsApp's own
+               emoji keyboard is this same standard Unicode set, there's
+               no separate "sticker" library to pull from (WhatsApp's
+               actual illustrated sticker packs are Meta's own
+               copyrighted artwork, not something any package can
+               legitimately ship). Sent immediately on click instead of
+               inserted into the text field — see handleSendSticker. */}
+              <EmojiPicker
+                theme={theme}
+                onEmojiClick={(emojiData) => handleSendSticker(emojiData.emoji)}
+                width={320}
+                height={380}
+                previewConfig={{ showPreview: false }}
+              />
             </div>
           )}
 
