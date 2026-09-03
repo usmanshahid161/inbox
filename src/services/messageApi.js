@@ -29,7 +29,11 @@ const messageApi = {
 
     formData.append('file', file)
     formData.append('interactionId', interactionId)
-    formData.append('type', 'audio')
+    // Was hardcoded to 'audio' regardless of the actual file — harmless
+    // today since the backend's fileUpload controller doesn't read this
+    // field at all, but misleading to anyone debugging later. Derived
+    // from the file's own MIME type instead.
+    formData.append('type', file.type?.split('/')[0] || 'file')
 
     const { data } = await api.post(`${baseUrl}/fileUpload`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' }

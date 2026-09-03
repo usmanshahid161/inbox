@@ -351,11 +351,20 @@ export default function MessageComposer({ interactionId, interactionStatus }) {
     }
     const recipient = selectedInteraction?.participants.find((p) => p?.role === 'customer')
 
+    // Meta's copy is driven entirely by `template.components` (already
+    // carries the media link) — this `attachments` array is purely so
+    // MessageBubble can show the same media in our own thread, same as a
+    // regular multimedia message.
+    const attachments = templatePayload.headerMedia
+      ? [{ type: templatePayload.headerMedia.type, data: { url: templatePayload.headerMedia.url } }]
+      : []
+
     const message = {
       author,
       interactionId,
       message: templatePayload.previewText, // rendered text for the thread/optimistic bubble
       messageType: 'TEMPLATE',
+      attachments,
       template: {
         name: templatePayload.name,
         language: templatePayload.language,
@@ -374,7 +383,7 @@ export default function MessageComposer({ interactionId, interactionStatus }) {
       interactionId,
       message: templatePayload.previewText,
       messageType: 'TEMPLATE',
-      attachments: [],
+      attachments,
       author
     }))
 
@@ -679,6 +688,7 @@ export default function MessageComposer({ interactionId, interactionStatus }) {
         isOpen={isTemplateModalOpen}
         onClose={() => setIsTemplateModalOpen(false)}
         onSend={handleSendTemplate}
+        interactionId={interactionId}
       />
     </div>
   )

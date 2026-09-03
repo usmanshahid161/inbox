@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
-import { X, Search, ChevronLeft, Send, FileText, Image as ImageIcon, Video, Link2, Phone, Copy } from 'lucide-react'
+import { X, Search, ChevronLeft, Send, FileText, Image as ImageIcon, Video, Link2, Phone, Copy, Upload } from 'lucide-react'
 import templatesApi from '../../services/templatesAPI'
+import messageApi from '../../services/messageApi'
 
 const CATEGORY_TABS = [
   { value: 'ALL', label: 'All' },
@@ -18,7 +19,7 @@ function fillPreview(text = '', values = []) {
   })
 }
 
-export default function TemplateSendModal({ isOpen, onClose, onSend }) {
+export default function TemplateSendModal({ isOpen, onClose, onSend, interactionId }) {
   const [templates, setTemplates] = useState([])
   const [loading, setLoading] = useState(false)
   const [loadError, setLoadError] = useState(null)
@@ -31,6 +32,16 @@ export default function TemplateSendModal({ isOpen, onClose, onSend }) {
   const [bodyValues, setBodyValues] = useState([])
   const [buttonValues, setButtonValues] = useState({})
   const [sending, setSending] = useState(false)
+
+  // Media header (IMAGE/VIDEO/DOCUMENT) — the media handle used when the
+  // template was *created* is only for Meta's review process; every actual
+  // send needs its own media reference. Uploaded here (reusing the same
+  // /fileUpload route messages already use), and the resulting public URL
+  // gets sent as the header parameter's `link`.
+  const [headerMediaUrl, setHeaderMediaUrl] = useState('')
+  const [headerMediaFilename, setHeaderMediaFilename] = useState('')
+  const [headerMediaUploading, setHeaderMediaUploading] = useState(false)
+  const [headerMediaError, setHeaderMediaError] = useState(null)
 
   useEffect(() => {
     if (!isOpen) return
@@ -61,17 +72,42 @@ export default function TemplateSendModal({ isOpen, onClose, onSend }) {
     .map((b, i) => ({ ...b, index: i }))
     .filter((b) => b.type === 'URL' && extractVariables(b.url || '').length > 0)
 
+  const isMediaHeader = ['IMAGE', 'VIDEO', 'DOCUMENT'].includes(selected?.components?.header?.type)
+
   const handleSelectTemplate = (template) => {
     setSelected(template)
     setHeaderValue('')
     setBodyValues(Array(extractVariables(template.components?.body?.text || '').length).fill(''))
     setButtonValues({})
+    setHeaderMediaUrl('')
+    setHeaderMediaFilename('')
+    setHeaderMediaError(null)
+  }
+
+  const handleHeaderMediaChange = async (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setHeaderMediaError(null)
+    setHeaderMediaUploading(true)
+    try {
+      const result = await messageApi.uploadFile(file, interactionId)
+      const url = result?.data?.url || result?.url
+      if (!url) throw new Error('No URL returned')
+      setHeaderMediaUrl(url)
+      setHeaderMediaFilename(result?.data?.originalName || file.name)
+    } catch {
+      setHeaderMediaError('Could not upload — try again.')
+    } finally {
+      setHeaderMediaUploading(false)
+    }
   }
 
   const handleBack = () => setSelected(null)
 
   const allFilled =
     (headerVars.length === 0 || headerValue.trim()) &&
+    (!isMediaHeader || (headerMediaUrl && !headerMediaUploading)) &&
     bodyValues.every((v) => v.trim()) &&
     urlButtonsWithVars.every((b) => buttonValues[b.index]?.trim())
 
@@ -86,9 +122,19 @@ export default function TemplateSendModal({ isOpen, onClose, onSend }) {
         components.push({ type: 'header', parameters: [{ type: 'text', text: headerValue }] })
       }
     }
-    // NOTE: media headers (IMAGE/VIDEO/DOCUMENT) reuse the approved template's
-    // sample media by default. Swapping the media per-send needs its own
-    // media upload step before calling onSend — not handled here.
+
+    // Media headers need their own reference for THIS send — the
+    // template-creation-time media handle is only ever used for Meta's
+    // review, never reused for actual messages.
+    if (isMediaHeader && headerMediaUrl) {
+      const mediaType = selected.components.header.type.toLowerCase() // image | video | document
+      const mediaParam = { link: headerMediaUrl }
+      if (mediaType === 'document' && headerMediaFilename) mediaParam.filename = headerMediaFilename
+      components.push({
+        type: 'header',
+        parameters: [{ type: mediaType, [mediaType]: mediaParam }],
+      })
+    }
 
     if (bodyVars.length) {
       components.push({
@@ -114,6 +160,10 @@ export default function TemplateSendModal({ isOpen, onClose, onSend }) {
       category: selected?.category,
       components,
       previewText,
+      // So the sent message shows the actual media in the chat thread too,
+      // not just in Meta's copy — MessageBubble renders from `attachments`,
+      // which `components` alone doesn't feed.
+      headerMedia: isMediaHeader && headerMediaUrl ? { type: selected.components.header.type, url: headerMediaUrl } : null,
     })
 
     setSending(false)
@@ -215,13 +265,21 @@ export default function TemplateSendModal({ isOpen, onClose, onSend }) {
                   </p>
                 )}
                 {selected.components?.header?.type === 'IMAGE' && (
-                  <div className="mb-2 flex h-20 items-center justify-center rounded bg-ink-200 text-ink-400 dark:bg-navy-700">
-                    <ImageIcon className="h-6 w-6" />
+                  <div className="mb-2 flex h-20 items-center justify-center overflow-hidden rounded bg-ink-200 text-ink-400 dark:bg-navy-700">
+                    {headerMediaUrl ? (
+                      <img src={headerMediaUrl} alt="" className="h-full w-full object-cover" />
+                    ) : (
+                      <ImageIcon className="h-6 w-6" />
+                    )}
                   </div>
                 )}
                 {selected.components?.header?.type === 'VIDEO' && (
-                  <div className="mb-2 flex h-20 items-center justify-center rounded bg-ink-200 text-ink-400 dark:bg-navy-700">
-                    <Video className="h-6 w-6" />
+                  <div className="mb-2 flex h-20 items-center justify-center overflow-hidden rounded bg-ink-200 text-ink-400 dark:bg-navy-700">
+                    {headerMediaUrl ? (
+                      <video src={headerMediaUrl} className="h-full w-full object-cover" muted />
+                    ) : (
+                      <Video className="h-6 w-6" />
+                    )}
                   </div>
                 )}
                 <p className="whitespace-pre-wrap text-sm text-ink-700 dark:text-navy-100">
@@ -255,6 +313,49 @@ export default function TemplateSendModal({ isOpen, onClose, onSend }) {
                     placeholder={`Value for {{${headerVars[0]}}}`}
                     className="w-full rounded-lg border border-ink-200 bg-white px-3 py-1.5 text-sm dark:border-navy-700 dark:bg-navy-800 dark:text-white"
                   />
+                </div>
+              )}
+
+              {isMediaHeader && (
+                <div>
+                  <label className="mb-1 block text-xs font-medium text-ink-600 dark:text-navy-300">
+                    {selected.components.header.type === 'IMAGE'
+                      ? 'Image'
+                      : selected.components.header.type === 'VIDEO'
+                        ? 'Video'
+                        : 'Document'}{' '}
+                    to send
+                  </label>
+                  <p className="mb-1.5 text-[11px] text-ink-400">
+                    This is sent fresh with this message — it's separate from the sample media used when the template
+                    was submitted for review.
+                  </p>
+                  <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-dashed border-ink-300 px-3 py-2 text-xs text-ink-500 hover:border-brand-400 hover:text-brand-600 dark:border-navy-600 dark:text-navy-400">
+                    <Upload className="h-3.5 w-3.5 shrink-0" />
+                    <span className="truncate">
+                      {headerMediaUploading
+                        ? 'Uploading...'
+                        : headerMediaUrl
+                          ? 'Uploaded — choose a different file'
+                          : 'Choose a file'}
+                    </span>
+                    <input
+                      type="file"
+                      accept={
+                        selected.components.header.type === 'IMAGE'
+                          ? 'image/*'
+                          : selected.components.header.type === 'VIDEO'
+                            ? 'video/*'
+                            : undefined
+                      }
+                      className="hidden"
+                      onChange={handleHeaderMediaChange}
+                    />
+                  </label>
+                  {headerMediaUrl && !headerMediaUploading && (
+                    <p className="mt-1 truncate text-[11px] text-emerald-600">Ready to send</p>
+                  )}
+                  {headerMediaError && <p className="mt-1 text-[11px] text-rose-500">{headerMediaError}</p>}
                 </div>
               )}
 
