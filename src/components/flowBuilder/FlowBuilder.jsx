@@ -16,7 +16,7 @@ import 'reactflow/dist/style.css'
 import { Trash2 } from 'lucide-react'
 import { showToast } from '../../features/ui/uiSlice.js'
 
-import FlowTopBar          from './FlowTopBar'
+import FlowTopBar          from './Flowtopbar.jsx'
 import NodePalette         from './NodePalette'
 import NodeConfigPanel     from './NodeConfigPanel.jsx'
 import FlowTestPanel       from './FlowTestPanel.jsx'
