@@ -152,7 +152,17 @@ export default function TemplateSendModal({ isOpen, onClose, onSend, interaction
       })
     })
 
-    const previewText = fillPreview(selected.components?.body?.text || '', bodyValues)
+    // WhatsApp shows a TEXT header as its own bold line above the body —
+    // this was only being captured for Meta's `components` payload, never
+    // folded into what actually gets stored/shown as the message's own
+    // text, so it never appeared in the thread (MessageBubble just
+    // renders `message.message` as plain text).
+    const headerText =
+      selected.components?.header?.type === 'TEXT'
+        ? fillPreview(selected.components.header.text || '', [headerValue])
+        : ''
+    const bodyText = fillPreview(selected.components?.body?.text || '', bodyValues)
+    const previewText = headerText ? `${headerText}\n\n${bodyText}` : bodyText
 
     onSend({
       name: selected?.name,
