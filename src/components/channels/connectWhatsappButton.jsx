@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { MessageCircle } from 'lucide-react'
 import Button from '../common/Button'
-import { loadFacebookSdk } from '../../utils/facebookSdk'
+import { loadFacebookSdk } from '../../utils/facebooksdk.js'
 import { completeEmbeddedSignup } from '../../features/whatsappChannel/whatsappNumbersSlice'
 import { showToast } from '../../features/ui/uiSlice'
 
