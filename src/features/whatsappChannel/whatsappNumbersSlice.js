@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit'
-import whatsappChannelApi from '../../services/whatsappChannelApi'
+import whatsappChannelApi from '../../services/whatsappChannelApi.js'
 import { addLogoutReset } from '../../utils/resetOnLogout'
 
 const initialState = {
