@@ -86,6 +86,16 @@ export default function TemplateFormModal() {
     })
   }
 
+  const handleBodyVariableNameChange = (index, value) => {
+    setForm((prev) => {
+      const next = structuredClone(prev)
+      const variableNames = next.components.body.variableNames || []
+      variableNames[index] = value
+      next.components.body.variableNames = variableNames
+      return next
+    })
+  }
+
   // Uploads the sample header media (same S3-backed endpoint chat
   // attachments use — see messageApi.js/center-service's controllers/
   // upload.js, which now accepts a request with no interactionId for
@@ -276,13 +286,22 @@ export default function TemplateFormModal() {
                       className="w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-navy-700 dark:bg-navy-900 dark:text-ink-100"
                     />
                     {extractVariables(form.components.header.text).length > 0 && (
-                      <input
-                        type="text"
-                        value={form.components.header.example}
-                        onChange={(e) => updateField('components.header.example', e.target.value)}
-                        placeholder="Example value for {{1}}, e.g. #48291"
-                        className="w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-navy-700 dark:bg-navy-900 dark:text-ink-100"
-                      />
+                      <>
+                        <input
+                          type="text"
+                          value={form.components.header.variableName || ''}
+                          onChange={(e) => updateField('components.header.variableName', e.target.value)}
+                          placeholder="Variable name, e.g. customer_name"
+                          className="w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-navy-700 dark:bg-navy-900 dark:text-ink-100"
+                        />
+                        <input
+                          type="text"
+                          value={form.components.header.example}
+                          onChange={(e) => updateField('components.header.example', e.target.value)}
+                          placeholder="Example value for {{1}}, e.g. #48291"
+                          className="w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm dark:border-navy-700 dark:bg-navy-900 dark:text-ink-100"
+                        />
+                      </>
                     )}
                   </div>
                 )}
@@ -354,16 +373,24 @@ export default function TemplateFormModal() {
 
                 {bodyVariables.length > 0 && (
                   <div className="mt-2 space-y-2 rounded-lg bg-ink-50 p-3 dark:bg-navy-900">
-                    <p className="text-xs font-medium text-ink-500 dark:text-ink-400">Example values (needed for review)</p>
+                    <p className="text-xs font-medium text-ink-500 dark:text-ink-400">Variable names &amp; example values (needed for review)</p>
                     {bodyVariables.map((v, i) => (
-                      <input
-                        key={v}
-                        type="text"
-                        value={form.components.body.examples?.[i] || ''}
-                        onChange={(e) => handleBodyExampleChange(i, e.target.value)}
-                        placeholder={`Example for {{${v}}}`}
-                        className="w-full rounded-md border border-ink-200 bg-white px-2.5 py-1.5 text-sm dark:border-navy-700 dark:bg-navy-950 dark:text-ink-100"
-                      />
+                      <div key={v} className="flex gap-2">
+                        <input
+                          type="text"
+                          value={form.components.body.variableNames?.[i] || ''}
+                          onChange={(e) => handleBodyVariableNameChange(i, e.target.value)}
+                          placeholder={`Name for {{${v}}}, e.g. customer_name`}
+                          className="w-2/5 rounded-md border border-ink-200 bg-white px-2.5 py-1.5 text-sm dark:border-navy-700 dark:bg-navy-950 dark:text-ink-100"
+                        />
+                        <input
+                          type="text"
+                          value={form.components.body.examples?.[i] || ''}
+                          onChange={(e) => handleBodyExampleChange(i, e.target.value)}
+                          placeholder={`Example for {{${v}}}`}
+                          className="flex-1 rounded-md border border-ink-200 bg-white px-2.5 py-1.5 text-sm dark:border-navy-700 dark:bg-navy-950 dark:text-ink-100"
+                        />
+                      </div>
                     ))}
                     {touched && errors.bodyExamples && <p className="text-xs text-rose-500">{errors.bodyExamples}</p>}
                   </div>

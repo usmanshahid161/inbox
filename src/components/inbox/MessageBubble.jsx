@@ -70,6 +70,18 @@ export default function MessageBubble({ message }) {
   const isInteractive = message.messageType === 'BUTTONS' || message.messageType === 'LIST'
   const options = message.messageType === 'BUTTONS' ? message.extraPayload?.buttons : message.extraPayload?.items
 
+  // "Stickers" here are just an emoji sent as a plain text message (see
+  // MessageComposer.jsx's sticker picker) — rendered big and bubble-free
+  // so they read like a real sticker in the thread, rather than a normal
+  // text bubble with one emoji floating in it.
+  const trimmedText = message.message?.trim() || ''
+  const isStickerLike =
+    message.messageType === 'TEXT' &&
+    !message.attachments?.length &&
+    trimmedText.length > 0 &&
+    [...trimmedText].length <= 4 &&
+    /^(\p{Extended_Pictographic}|\p{Emoji_Presentation}|\s)+$/u.test(trimmedText)
+
   // Who actually sent this — "Bot" for flow-engine messages, the agent's
   // name otherwise, so it's obvious at a glance who answered when more
   // than one person (or the bot) has touched a conversation. Falls back
@@ -97,7 +109,13 @@ export default function MessageBubble({ message }) {
           </div>
         ))}
 
-        {message.message && (
+        {message.message && isStickerLike && (
+          <div className={`text-6xl leading-none ${message.status === MESSAGE_STATUS.FAILED ? 'opacity-70' : ''}`}>
+            {message.message}
+          </div>
+        )}
+
+        {message.message && !isStickerLike && (
           <div
             className={`overflow-hidden rounded-2xl text-sm leading-relaxed ${
               isOutbound

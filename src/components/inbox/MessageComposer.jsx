@@ -557,12 +557,12 @@ export default function MessageComposer({ interactionId, interactionStatus }) {
           {showStickers && (
             <div className="absolute bottom-11 left-0 z-20 shadow-popover">
               {/* Same full emoji set as the picker above — WhatsApp's own
-               emoji keyboard is this same standard Unicode set, there's
-               no separate "sticker" library to pull from (WhatsApp's
-               actual illustrated sticker packs are Meta's own
-               copyrighted artwork, not something any package can
-               legitimately ship). Sent immediately on click instead of
-               inserted into the text field — see handleSendSticker. */}
+                  emoji keyboard is this same standard Unicode set, there's
+                  no separate "sticker" library to pull from (WhatsApp's
+                  actual illustrated sticker packs are Meta's own
+                  copyrighted artwork, not something any package can
+                  legitimately ship). Sent immediately on click instead of
+                  inserted into the text field — see handleSendSticker. */}
               <EmojiPicker
                 theme={theme}
                 onEmojiClick={(emojiData) => handleSendSticker(emojiData.emoji)}

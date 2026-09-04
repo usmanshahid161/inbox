@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, useLocation } from 'react-router-dom'
 import { MessageSquare, Eye, EyeOff, Loader2 } from 'lucide-react'
-import { login, selectAuth, selectIsAuthenticated, clearAuthError } from '../features/auth/authSlice.js'
+import { login, selectAuth, selectIsAuthenticated, clearAuthError } from '../features/auth/authSlice'
 
 // Mirrors authApi.js's own flag — this text should only claim "any
 // credentials work" when that's actually true, not unconditionally.

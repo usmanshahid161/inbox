@@ -1215,11 +1215,11 @@
   "version" "1.5.407"
 
 "emoji-picker-react@^4.12.0":
-  "integrity" "sha512-QPhs9+y6btRXH80eTe67d678ufgv+vjd4YETU1mp9b8LqYS4bMP3OxmpVzG6Y11AhyvzaizZiuxD5I4HYeIPVw=="
-  "resolved" "https://registry.npmjs.org/emoji-picker-react/-/emoji-picker-react-4.19.4.tgz"
-  "version" "4.19.4"
+  "integrity" "sha512-vsgsdNOf0zFahv7+Pj5u3WNz9ennqUAkSZw1ZvUEAh8Kfel292AjmKbCLI7t9Hq2DN3lFGVMb1G7Iqa2Jl4HWg=="
+  "resolved" "https://registry.npmjs.org/emoji-picker-react/-/emoji-picker-react-4.20.1.tgz"
+  "version" "4.20.1"
   dependencies:
-    "flairup" "1.0.0"
+    "flairup" "1.1.1"
 
 "es-abstract-get@^1.0.0":
   "integrity" "sha512-6PMWXpdhshVvFp+FoWYs1EvG1Nj0tvk0dZM+XcK0xMEM1czRVcP6ohqPWHy6qPagSpC8j4+p89WXlT+xXJs/fg=="
@@ -1581,10 +1581,10 @@
     "locate-path" "^6.0.0"
     "path-exists" "^4.0.0"
 
-"flairup@1.0.0":
-  "integrity" "sha512-IKlE+pNvL2R+kVL1kEhUYqRxVqeFnjiIvHWDMLFXNaqyUdFXQM2wte44EfMYJNHkW16X991t2Zg8apKkhv7OBA=="
-  "resolved" "https://registry.npmjs.org/flairup/-/flairup-1.0.0.tgz"
-  "version" "1.0.0"
+"flairup@1.1.1":
+  "integrity" "sha512-NRdjAYpQLEOmvLebVCfL2D88M6CZOz3LCK06arH1HKSHbrJgEDbqzgJjur2yuRtbb1YAtElacR57tf5GBAHaqg=="
+  "resolved" "https://registry.npmjs.org/flairup/-/flairup-1.1.1.tgz"
+  "version" "1.1.1"
 
 "flat-cache@^3.0.4":
   "integrity" "sha512-CYcENa+FtcUKLmhhqyctpclsq7QF38pKjZHsGNiSQF5r4FtoKDWabFDl3hzaEQMvT1LHEysw5twgLvpYYb4vbw=="

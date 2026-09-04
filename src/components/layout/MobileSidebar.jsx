@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Inbox, Users, Radio, Headphones, BarChart3, Settings, LogOut, X, MessageSquare, LayoutTemplate, Workflow, TagIcon, ListOrdered, UsersRound, Network, UserCog, MessageSquareText, Coffee } from 'lucide-react'
+import { Inbox, Users, Radio, Headphones, BarChart3, Settings, LogOut, X, MessageSquare, LayoutTemplate, Workflow, TagIcon, ListOrdered, UsersRound, Network, UserCog, MessageSquareText, Coffee, Megaphone, Contact2 } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 import { closeMobileSidebar, selectIsMobileSidebarOpen } from '../../features/ui/uiSlice'
 import Avatar from '../common/Avatar'
@@ -12,6 +12,8 @@ const NAV_ITEMS = [
   { to: '/app/agents', label: 'Agents', icon: Headphones, adminOnly: true },
   { to: '/app/analytics', label: 'Analytics', icon: BarChart3, adminOnly: true },
   { to: '/app/templates', label: 'Templates', icon: LayoutTemplate, adminOnly: true },
+  { to: '/app/campaigns', label: 'Campaigns', icon: Megaphone, adminOnly: true },
+  { to: '/app/contact-lists', label: 'Contact Lists', icon: Contact2, adminOnly: true },
   { to: '/app/flows', label: 'Flow Builder', icon: Workflow, adminOnly: true },
   { to: '/app/admin/tags', label: 'Tags', icon: TagIcon, adminOnly: true },
   { to: '/app/admin/queues', label: 'Queues', icon: ListOrdered, adminOnly: true },

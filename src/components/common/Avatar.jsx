@@ -26,7 +26,7 @@ export default function Avatar({ name, src, color = '#279a89', size = 'md', pres
           className={`${SIZES[size]} flex items-center justify-center rounded-full font-medium text-white ring-1 ring-black/5`}
           style={{ backgroundColor: color }}
         >
-          {getInitials(name)}
+          { name && getInitials(name)}
         </span>
       )}
       {presence && (

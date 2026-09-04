@@ -11,6 +11,9 @@ import Agents                      from './pages/Agents'
 import Analytics                   from './pages/Analytics'
 import Settings          from './pages/Settings'
 import Templates   from './pages/Templates.jsx';
+import Campaigns from './pages/Campaigns.jsx';
+import CampaignDetail from './pages/CampaignDetail.jsx';
+import ContactLists from './pages/ContactLists.jsx';
 import FlowsList from './components/flowBuilder/FlowsList.jsx';
 import FlowBuilder from './components/flowBuilder/FlowBuilder.jsx';
 import Tags from './pages/Tags.jsx';
@@ -95,6 +98,31 @@ export default function App() {
           element={
             <RoleRoute allow={['ADMIN']}>
               <Templates />
+            </RoleRoute>
+          }
+        />
+
+        <Route
+          path="campaigns"
+          element={
+            <RoleRoute allow={['ADMIN']}>
+              <Campaigns />
+            </RoleRoute>
+          }
+        />
+        <Route
+          path="campaigns/:id"
+          element={
+            <RoleRoute allow={['ADMIN']}>
+              <CampaignDetail />
+            </RoleRoute>
+          }
+        />
+        <Route
+          path="contact-lists"
+          element={
+            <RoleRoute allow={['ADMIN']}>
+              <ContactLists />
             </RoleRoute>
           }
         />

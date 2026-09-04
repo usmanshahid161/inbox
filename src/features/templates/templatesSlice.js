@@ -136,8 +136,14 @@ const templatesSlice = createSlice({
       })
       .addCase(updateTemplate.fulfilled, (state, action) => {
         state.saving = false
-        const idx = state.items.findIndex((t) => t._id === action.payload._id)
-        if (idx !== -1) state.items[idx] = action.payload
+        // Response is { success, data: {...template} } — same shape
+        // createTemplate.fulfilled above already unwraps correctly.
+        // This wasn't, so `_id` was always undefined here, findIndex
+        // never matched, and an edited template silently kept showing
+        // its old values in the list until the page was refreshed —
+        // even though the save itself succeeded on the backend.
+        const idx = state.items.findIndex((t) => t._id === action.payload?.data?._id)
+        if (idx !== -1) state.items[idx] = action.payload.data
         state.isFormOpen = false
         state.editingTemplateId = null
       })
@@ -152,8 +158,10 @@ const templatesSlice = createSlice({
       })
 
       .addCase(submitTemplateForReview.fulfilled, (state, action) => {
-        const idx = state.items.findIndex((t) => t._id === action.payload._id)
-        if (idx !== -1) state.items[idx] = action.payload
+        // Same unwrapping bug as updateTemplate.fulfilled above — fixed
+        // the same way.
+        const idx = state.items.findIndex((t) => t._id === action.payload?.data?._id)
+        if (idx !== -1) state.items[idx] = action.payload.data
       })
 
       .addCase(syncTemplateStatuses.fulfilled, (state, action) => {
