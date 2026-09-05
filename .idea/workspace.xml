@@ -4,21 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="99957b2f-a04f-42d5-9f32-6879192e5b9d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="99957b2f-a04f-42d5-9f32-6879192e5b9d" name="Changes" comment="New interaction">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/inbox/AttachmentPreview.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inbox/AttachmentPreview.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/inbox/ConversationHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inbox/ConversationHeader.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/inbox/ConversationItem.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inbox/ConversationItem.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/inbox/ConversationList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inbox/ConversationList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/inbox/InboxFilters.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inbox/InboxFilters.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/interactions/interactionsSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/interactions/interactionsSlice.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/useCentrifugeSubscription.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useCentrifugeSubscription.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Inbox.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Inbox.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/interactionApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/interactionApi.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/constants.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/formatters.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/formatters.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/vite.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,11 +66,24 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1788590394703</updated>
-      <workItem from="1788590396496" duration="3817000" />
+      <workItem from="1788590396496" duration="5754000" />
     </task>
+    <task id="LOCAL-00001" summary="New interaction">
+      <option name="closed" value="true" />
+      <created>1788596196820</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1788596196820</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="New interaction" />
+    <option name="LAST_COMMIT_MESSAGE" value="New interaction" />
   </component>
 </project>
