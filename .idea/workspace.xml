@@ -4,11 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fe80ac5-6c87-4f20-9301-761a3809299f" name="Changes" comment="Campaign">
+    <list default="true" id="99957b2f-a04f-42d5-9f32-6879192e5b9d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/inbox/AttachmentPreview.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inbox/AttachmentPreview.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/inbox/ConversationHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inbox/ConversationHeader.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/inbox/ConversationItem.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inbox/ConversationItem.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/inbox/ConversationList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inbox/ConversationList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/inbox/InboxFilters.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inbox/InboxFilters.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/interactions/interactionsSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/interactions/interactionsSlice.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/useCentrifugeSubscription.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useCentrifugeSubscription.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Inbox.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Inbox.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/interactionApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/interactionApi.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/constants.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/formatters.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/formatters.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,22 +28,22 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;usmanshahid161&quot;
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "usmanshahid161"
   }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/usmanshahid161/inbox.git&quot;,
-    &quot;accountId&quot;: &quot;62c73eca-3838-46f9-b7e4-d9f723f6a155&quot;
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/usmanshahid161/inbox.git",
+    "accountId": "62c73eca-3838-46f9-b7e4-d9f723f6a155"
   }
-}</component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 6
-}</component>
-  <component name="ProjectId" id="3IsMGmWHfzrKAv8BfCP1Rujj5NZ" />
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 6
+}]]></component>
+  <component name="ProjectId" id="3Itii91IHaU3keDwTAydYwjcYmf" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -49,6 +59,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "yarn",
+    "ts.external.directory.path": "C:\\Users\\usman.shahid\\AppData\\Local\\JetBrains\\WebStorm 2024.3.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -62,30 +73,16 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="2fe80ac5-6c87-4f20-9301-761a3809299f" name="Changes" comment="" />
-      <created>1788548730917</created>
+      <changelist id="99957b2f-a04f-42d5-9f32-6879192e5b9d" name="Changes" comment="" />
+      <created>1788590394703</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1788548730917</updated>
-      <workItem from="1788548732341" duration="2150000" />
-      <workItem from="1788552034714" duration="2395000" />
+      <updated>1788590394703</updated>
+      <workItem from="1788590396496" duration="3817000" />
     </task>
-    <task id="LOCAL-00001" summary="Campaign">
-      <option name="closed" value="true" />
-      <created>1788552095142</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1788552095142</updated>
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="Campaign" />
-    <option name="LAST_COMMIT_MESSAGE" value="Campaign" />
   </component>
 </project>

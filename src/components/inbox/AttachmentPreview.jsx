@@ -124,7 +124,7 @@ export default function AttachmentPreview({ attachment }) {
   const { type, size, data } = attachment
   const url = data?.url
 
-  if (type === MESSAGE_TYPE.IMAGE || type === MESSAGE_TYPE.STICKER) {
+  if (type === MESSAGE_TYPE.IMAGE) {
     return (
       <a href={url} target="_blank" rel="noreferrer" className="block overflow-hidden rounded-lg">
         <img src={url} alt={ 'Attachment'} className="max-h-64 w-full max-w-xs object-cover" loading="lazy" />

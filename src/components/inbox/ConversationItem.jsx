@@ -30,7 +30,7 @@ export default function ConversationItem({ interaction, active, onClick }) {
         active ? 'bg-brand-50 dark:bg-navy-800' : 'hover:bg-ink-50 dark:hover:bg-navy-800/60'
       }`}
     >
-      <Avatar name={caller.name} color="#219c89" presence={caller.online ? 'ONLINE' : undefined} />
+      <Avatar name={caller?.name || caller?.id} color="#219c89" presence={caller.online ? 'ONLINE' : undefined} />
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center justify-between gap-2">
@@ -40,7 +40,7 @@ export default function ConversationItem({ interaction, active, onClick }) {
                 isUnread ? 'font-semibold text-ink-900 dark:text-white' : 'font-medium text-ink-800 dark:text-navy-100'
               }`}
             >
-              {caller.name}
+              {caller?.name || caller?.id}
             </p>
             <ChannelGlyph className={`h-3.5 w-3.5 shrink-0 ${ChannelMeta.className}`} />
           </span>

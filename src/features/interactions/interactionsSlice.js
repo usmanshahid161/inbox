@@ -202,6 +202,21 @@ export const reopenInteraction = createAsyncThunk('interactions/reopen', async (
   }
 })
 
+// Agent-initiated conversation start — the result gets upserted into the
+// list the same way a websocket interaction.created event would (see
+// interactionUpserted below), so it shows up immediately without a
+// refetch.
+export const startOutboundConversation = createAsyncThunk(
+  'interactions/startOutbound',
+  async ({ queue, phone }, { rejectWithValue }) => {
+    try {
+      return await interactionApi.startOutbound({ queue, phone })
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || 'Could not start conversation.')
+    }
+  }
+)
+
 
 
 export const markInteractionRead = createAsyncThunk('interactions/markRead', async (interactionId, {getState}) => {
@@ -249,11 +264,15 @@ const interactionsSlice = createSlice({
     // Bumps a conversation's preview + unread count when a new message
     // arrives for it (called from the messages realtime handler).
     bumpLastMessage(state, action) {
-      const { interactionId, lastMessage, incrementUnread } = action.payload
+      const { interactionId, lastMessage, incrementUnread, role  } = action.payload
       const itx = state.items.find((i) => i._id === interactionId)
       if (!itx) return
       itx.lastMessage = lastMessage
       itx.updatedAt = lastMessage.createdAt
+      console.log(action.payload, "27363636")
+      if(role === "customer") {
+        itx.lastCustomerMessageAt = lastMessage?.createdAt
+      }
       if (incrementUnread && state.selectedInteractionId !== interactionId) {
         itx.unreadCount = (itx.unreadCount || 0) + 1
       }
@@ -261,6 +280,15 @@ const interactionsSlice = createSlice({
   },
   extraReducers(builder) {
     builder
+      .addCase(startOutboundConversation.fulfilled, (state, action) => {
+        const incoming = action.payload
+        const idx = state.items.findIndex((i) => i._id === incoming._id)
+        if (idx !== -1) {
+          state.items[idx] = { ...state.items[idx], ...incoming }
+        } else {
+          state.items.unshift(incoming)
+        }
+      })
       .addCase(fetchInteractions.pending, (state) => {
         state.status = 'loading'
         state.error = null

@@ -20,6 +20,9 @@ export default function InboxFilters({
 }) {
   return (
     <div className="space-y-3 border-b border-ink-100 px-3 pb-3 pt-3 dark:border-navy-800">
+      {/* Search temporarily disabled — see ConversationList.jsx / New
+          conversation button work. Commenting out rather than deleting
+          so it's easy to bring back later.
       <div className="relative">
         <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-400 dark:text-navy-400" />
         <input
@@ -29,6 +32,7 @@ export default function InboxFilters({
           className="w-full rounded-lg border border-ink-200 bg-white py-2 pl-9 pr-3 text-sm text-ink-800 placeholder:text-ink-400 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-400 dark:border-navy-700 dark:bg-navy-800 dark:text-white dark:placeholder:text-navy-400"
         />
       </div>
+      */}
 
       <div className="flex rounded-lg bg-ink-100 p-0.5 dark:bg-navy-800">
         {ASSIGNMENT_TABS.map((tab) => (

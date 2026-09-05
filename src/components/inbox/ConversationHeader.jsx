@@ -155,7 +155,7 @@ export default function ConversationHeader({
   const activeAgentParticipants =
     participants.filter(
       (participant) =>
-        participant?.role === 'agent' &&
+        (participant?.role === 'agent' || participant?.role === 'AGENT') &&
         participant?.status === true
     )
 
@@ -168,6 +168,7 @@ export default function ConversationHeader({
   const isCurrentUserParticipant =
     !!currentUserParticipant
 
+  console.log(currentUserParticipant, "partipiantttttttt", connect)
   const isCurrentUserOnlyAgent =
     isCurrentUserParticipant &&
     activeAgentParticipants.length === 1
@@ -308,7 +309,7 @@ export default function ConversationHeader({
 
       {/* Avatar */}
       <Avatar
-        name={caller.name}
+        name={caller?.name || caller?.id}
         color="#219c89"
         presence={
           caller.online
@@ -320,7 +321,7 @@ export default function ConversationHeader({
       {/* Customer */}
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-semibold text-ink-900 dark:text-white">
-          {caller.name}
+          {caller.name || caller?.id}
         </p>
 
         <p className="flex items-center gap-1 truncate text-xs text-ink-500 dark:text-navy-400">

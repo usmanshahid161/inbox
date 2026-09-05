@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Inbox as InboxIcon } from 'lucide-react'
+import { Inbox as InboxIcon, Plus } from 'lucide-react'
 import ConversationItem from './ConversationItem'
 import InboxFilters from './InboxFilters'
+import NewConversationModal from './NewConversationModal'
 import EmptyState from '../common/EmptyState'
 import InfiniteScrollList from '../common/InfiniteScrollList'
 import { Skeleton } from '../common/Loader'
@@ -53,6 +54,7 @@ export default function ConversationList({ onSelect }) {
   const search = useSelector(selectInboxSearch)
   const selectedId = useSelector(selectSelectedInteractionId)
   const [sort, setSort] = useState('newest')
+  const [newConvoOpen, setNewConvoOpen] = useState(false)
 
   const [pagination, setPagination] = useState({
     ALL: emptyPagination,
@@ -130,6 +132,16 @@ export default function ConversationList({ onSelect }) {
 
   return (
     <div className="flex h-full flex-col bg-white dark:bg-navy-900">
+      <div className="flex items-center justify-between px-3 pt-3">
+        <p className="text-sm font-semibold text-ink-900 dark:text-white">Conversations</p>
+        <button
+          onClick={() => setNewConvoOpen(true)}
+          className="flex items-center gap-1 rounded-lg bg-brand-600 px-2.5 py-1.5 text-xs font-medium text-white hover:bg-brand-700"
+        >
+          <Plus className="h-3.5 w-3.5" /> New conversation
+        </button>
+      </div>
+
       <InboxFilters
         search={search}
         onSearchChange={(v) => dispatch(setInboxSearch(v))}
@@ -187,6 +199,15 @@ export default function ConversationList({ onSelect }) {
           )}
         />
       )}
+
+      <NewConversationModal
+        open={newConvoOpen}
+        onClose={() => setNewConvoOpen(false)}
+        onStarted={(interactionId) => {
+          dispatch(selectInteraction(interactionId))
+          onSelect?.(interactionId)
+        }}
+      />
     </div>
   )
 }

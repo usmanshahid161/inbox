@@ -17,7 +17,7 @@ export default function Inbox() {
   const detailsCollapsed = useSelector(selectIsCustomerDetailsCollapsed)
   const isMobile = useIsMobile()
   const currentUser = useSelector(selectCurrentUser)
-  const isIamIn = selectedInteraction?.participants?.length > 0 && selectedInteraction?.participants.find(participant => participant?.status && participant?.id === currentUser?._id && participant.role === "agent")
+  const isIamIn = selectedInteraction?.participants?.length > 0 && selectedInteraction?.participants.find(participant => participant?.status && participant?.id === currentUser?._id && (participant.role === "agent" || participant.role === "AGENT"))
 
   const handleBack = () => dispatch(selectInteraction(null))
 

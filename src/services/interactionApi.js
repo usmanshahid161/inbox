@@ -138,6 +138,14 @@ const interactionApi = {
       }
     )
     return data
+  },
+
+  // Agent-initiated — starts (or rejoins/reopens) a conversation with a
+  // number the agent picks, rather than waiting for the customer to
+  // message first. See center-service's controllers/outboundInteraction.js.
+  async startOutbound({ queue, phone }) {
+    const { data } = await api.post(`${baseUrl}/interactions/outbound`, { queue, phone })
+    return data.data
   }
 }
 

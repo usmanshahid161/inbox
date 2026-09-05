@@ -72,7 +72,8 @@ export function useCentrifugeSubscription() {
                 createdAt: data?.message?.createdAt,
                 direction: data?.message?.direction
               },
-              incrementUnread: data?.message?.direction === 0
+              incrementUnread: data?.message?.direction === 0,
+              role: data.message?.author?.role
             })
           )
 
